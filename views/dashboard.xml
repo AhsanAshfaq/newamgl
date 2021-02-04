@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <record id="amgl_dashboard_tree" model="ir.ui.view">
+            <field name="name">Dashboard</field>
+            <field name="model">amgl.dashboard</field>
+            <field name="arch" type="xml">
+                <tree duplicate="0" default_order="state desc" decoration-bf ="state in ('expecting','pending','completed')" decoration-info="state=='expecting'" decoration-danger="state=='pending'" decoration-succes="state=='completed'" string="Dashboard" create="false" edit="false">
+                    <field name="custodian_id" invisible="1"/>
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="account_number"/>
+                    <field name="product"/>
+					<field name="state"/>
+                    <field name="quantity" string="Total Quantity"/>
+                    <field name="total_weight"/>
+                    <button name="view_record" attrs="{'invisible': [('state','=','completed')]}" type="object" string="View Record" custom="click" class="oe_highlight"/>
+                    <button name="edit_record" attrs="{'invisible': [('state','=','completed')]}" type="object" string="Edit Record" custom="click" class="oe_highlight"/>
+
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="amgl.dashboard_search" model="ir.ui.view">
+            <field name="name">Search Dashboard</field>
+            <field name="model">amgl.dashboard</field>
+            <field name="arch" type="xml">
+                <search string="Search Customers">
+                    <field name="first_name" string="First Name" domain="[('first_name','ilike',self.first_name)]"/>
+                    <field name="last_name" string="Last Name" domain="[('last_name','ilike',self.last_name)]"/>
+                    <field name="account_number" string="Account Number" domain="[('account_number','ilike',self.account_number)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="amgl.advance_search_dashboard" model="ir.ui.view">
+            <field name="name">Advance Filter</field>
+            <field name="model">amgl.dashboard</field>
+            <field name="inherit_id" ref="amgl.dashboard_search"/>
+            <field name="arch" type="xml">
+            <field name="first_name" position="after">
+                <filter string="Pending" domain="[('state','=','pending')]" />
+                <filter string="Expected" domain="[('state','=','expecting')]" />
+                <filter string="Completed" domain="[('state','=','completed')]" />
+                <filter string="Commingled" domain="[('account_type','=','Commingled')]" />
+                <filter string="Segregated" domain="[('account_type','=','Segregated')]" />
+                <filter string="Gold" domain="[('product','like','Gold')]" />
+            </field>
+            </field>
+        </record>
+    </data>
+</odoo>

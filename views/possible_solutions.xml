@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+
+        <record id="amgl.possible_solutions_form" model="ir.ui.view">
+            <field name="name">Possible Solutions Form</field>
+            <field name="model">amgl.possible_solution</field>
+            <field name="arch" type="xml">
+                <form string="" duplicate="0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="reason_id" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

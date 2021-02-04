@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Equity Trust Company - New Accounts Commingled Invoice"
+            id="action_report_equity_new_accounts_billing_commingled"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.equity_new_accounts_billing_commingled"
+            file="amgl.equity_new_accounts_billing_commingled"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+            menu="False"
+         />
+    </data>
+</odoo>

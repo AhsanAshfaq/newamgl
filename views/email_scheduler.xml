@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="view_scheduler_tree" model="ir.ui.view">
+            <field name="name">email.scheduler.tree</field>
+            <field name="model">amgl.email.scheduler</field>
+            <field name="arch" type="xml">
+                <tree string="Scheduled Executions" create="false" edit="false">
+                    <field name="name"/>
+                    <field name="numberOfUpdates"/>
+                    <field name="lastModified"/>
+                    <field name="mail_id" string="Email Reference Id"/>
+                    <field name="attachment_id" string="Attachment Reference Id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

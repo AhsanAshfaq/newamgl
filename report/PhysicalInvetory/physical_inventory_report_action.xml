@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Physical Inventory Summary"
+            id="action_report_physical_inventory"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.physical_inventory_report_template"
+            file="amgl.physical_inventory_report_template"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+            menu="False"
+         />
+    </data>
+</odoo>

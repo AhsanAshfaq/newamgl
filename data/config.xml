@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="myid" model="ir.config_parameter">
+            <field name="key">amgl.live.url</field>
+            <field name="value">https://irastorage.amark.com</field>
+        </record>
+        <record id="cc_email_address" model="ir.config_parameter">
+            <field name="key">email.cc</field>
+            <field name="value">ahsan.a@allshoreresources.com,lhamiter@amark.com</field>
+        </record>
+        <record id="myid1" model="ir.config_parameter">
+            <field name="key">amgl.temp.filepath</field>
+            <field name="value">/srv/www/AMARK/tmp</field>
+        </record>
+   </data>
+</openerp>

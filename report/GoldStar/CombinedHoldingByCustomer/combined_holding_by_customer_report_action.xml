@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Combined Holding Statement By Customer"
+            id="action_report_combined_holding_statement_by_customer"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.combined_holding_statement_by_customer_report_template"
+            file="amgl.combined_holding_statement_by_customer_report_template"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+            menu="False"
+         />
+    </data>
+</odoo>

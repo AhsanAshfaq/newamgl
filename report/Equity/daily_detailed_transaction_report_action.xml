@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Daily Transaction Report"
+            id="action_report_daily_detailed_transaction"
+            model="amgl.order_line"
+            report_type="qweb-pdf"
+            name="amgl.daily_detailed_transaction_report_template"
+            file="amgl.daily_detailed_transaction_report_template"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+            menu="False"
+         />
+    </data>
+</odoo>

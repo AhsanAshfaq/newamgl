@@ -1,0 +1,209 @@
+<odoo>
+    <template id="daily_detailed_transaction_report_template">
+        <t t-call="report.html_container">
+            <t t-as="report.external_layout">
+                <t t-if="len(docs) == 0">
+                    <div class="page">
+                        <h1 style="text-align:center !important;">No Data Found.</h1>
+                    </div>
+                </t>
+                <t t-if="len(docs) > 0">
+                    <div class="page">
+                        <style>
+                            .text-right{
+                            text-align:right !important;
+                            padding-left:5px !important;
+                            }
+                        </style>
+                        <div style="margin-top:20px !important;margin-bottom:25px !important;padding-bottom:25px !important;padding-top:20px !important;font-family:monospace !important;font-size:9px;background-color:  white !important;width:100%;">
+                            <div style="width:100%;">
+                                <h3 style="font-size:11px !important;text-align:right;float:left;font-weight: bold;">A-M
+                                    Global Logistics
+                                </h3>
+                                <h3 style="font-size:11px !important;text-align:right;float:right;font-weight: bold;">
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                                </h3>
+                            </div>
+                            <div style="clear:both;"></div>
+                            <div style="font-family:monospace !important;font-size:15px !important;font-weight:bold !important;width:100%;float:left;text-align:center !important;">
+                                <u>Daily Detail Transaction Report</u>
+                            </div>
+                        </div>
+                        <t t-call="amgl.detailed_transaction_report_template_body"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="detailed_transaction_report_template_body">
+        <t t-set="total_quantity" t-value="0"/>
+        <t t-set="unique_dates" t-value="[]"/>
+        <t t-set="total_ounces" t-value="0"/>
+        <table
+                style="width:100%;
+                       font-family:monospace !important;font-size:7px !important;">
+            <thead>
+                <tr class="text-left" style="border-bottom: 2px solid black !important;">
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Date
+                    </th>
+                    <th style="padding-left:12px !important;border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Trans.
+                        Date
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Type
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Custodian
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Acct #
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Name
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Class
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        class="text-right">Qty
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Product
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        align="left">Product Code
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;"
+                        class="text-right">Total Ounces
+                    </th>
+
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <!--<td style="color:white  !important;border-top:3px solid white !important;">.</td>-->
+                </tr>
+            </tfoot>
+            <tbody class="sale_tbody">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <t t-foreach="docs" t-as="o">
+                    <t t-if="o.customer_id.is_account_closed == False">
+                        <t t-set="render" t-value="False"/>
+                        <t t-if="o.metal_movement_id">
+                            <t t-if="o.metal_movement_id.state == 'completed'">
+                                <t t-set="render" t-value="True"/>
+                            </t>
+                        </t>
+                        <t t-if="not o.metal_movement_id">
+                            <t t-set="render" t-value="True"/>
+                        </t>
+                        <t t-if="render">
+                            <t t-if="o.transaction_detail_sort_date not in unique_dates">
+                                <t t-set="unique_dates" t-value="unique_dates+[o.transaction_detail_sort_date]"/>
+                                <t t-if="len(unique_dates) > 1">
+                                    <tr>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                        <td style="border-bottom: 1px solid black !important;"></td>
+                                    </tr>
+                                </t>
+                            </t>
+                            <tr>
+                                <td>
+                                    <span t-field="o.create_date" t-field-options="{'format':'MM/dd/YY'}"/>
+
+                                </td>
+                                <td>
+                                    <t t-if="o.metal_movement_id">
+                                        <span style="padding-left:12px !important;" t-field="o.metal_movement_id.date_create"
+                                              t-field-options="{'format':'MM/dd/YY'}"/>
+                                    </t>
+                                    <t t-if="not o.metal_movement_id">
+                                        <span style="padding-left:12px !important;" t-field="o.date_received" t-field-options="{'format':'MM/dd/YY'}"/>
+                                    </t>
+
+                                </td>
+                                <td>
+                                    <t t-if="o.metal_movement_id">
+                                        W
+                                    </t>
+                                    <t t-if="not o.metal_movement_id">
+                                        D
+                                    </t>
+                                </td>
+                                <td>
+                                    <span t-field="o.customer_id.custodian_id.custodian_code"/>
+                                </td>
+                                <td>
+                                    <t t-if=" not o.customer_id.custodian_id.name == 'GoldStar Trust Company'">
+                                        <span t-field="o.customer_id.account_number"/>
+                                    </t>
+                                    <t t-if="o.customer_id.custodian_id.name == 'GoldStar Trust Company'">
+                                        <span t-field="o.customer_id.gst_account_number"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <span t-field="o.customer_id.first_name"/>, <span t-field="o.customer_id.first_name"/>
+                                </td>
+                                <td>
+                                    <t t-if="o.customer_id.account_type == 'Commingled'">
+                                        Comm
+                                    </t>
+                                    <t t-if="o.customer_id.account_type == 'Segregated'">
+                                        Seg
+                                    </t>
+
+                                </td>
+                                <td style="padding-right:5px;" class="text-right">
+                                    <span t-esc="int(o.total_received_quantity)"/>
+                                </td>
+                                <td>
+                                    <span t-field="o.products.goldstar_name"/>
+                                </td>
+                                <td>
+                                    <span t-field="o.products.product_code"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(o.temp_received_weight)"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </t>
+            </tbody>
+        </table>
+    </template>
+</odoo>

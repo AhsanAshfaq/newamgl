@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <report
+                id="customer_current_inventory_xlsx"
+                model="amgl.customer"
+                string="Customer Current Inventory (Excel)"
+                report_type="xlsx"
+                name="customer.current.inventory.xlsx"
+                file="customer.current.inventory.xlsx"
+                groups="amgl.group_amark_admins,amgl.group_amark_custodian,amgl.group_amark_sub_admins"
+                attachment_use="False"
+            />
+
+        <report
+                id="customer_transction_history_xlsx"
+                model="amgl.customer"
+                string="Customer Transactions History (Excel)"
+                report_type="xlsx"
+                name="customer.transaction.history.xlsx"
+                file="customer.transaction.history.xlsx"
+                groups="amgl.group_amark_admins,amgl.group_amark_custodian,amgl.group_amark_sub_admins"
+                attachment_use="False"
+            />
+
+        <report
+                id="customer_metal_activity_xlsx"
+                model="amgl.customer"
+                string="Customer Metal Activity (Excel)"
+                report_type="xlsx"
+                name="customer.metal.activity.xlsx"
+                file="customer.metal.activit.xlsx"
+                groups="amgl.group_amark_admins,amgl.group_amark_custodian,amgl.group_amark_sub_admins"
+                attachment_use="False"
+            />
+
+        <record id="amgl.customer_filters" model="ir.ui.view">
+            <field name="name">Customer Filters</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <search string="Filter Customers">
+                    <filter name="is_account_closed" string="Open Accounts" domain="[('is_account_closed','=',False)]" />
+                    <filter name="is_account_closed_not" string="Closed Accounts" domain="[('is_account_closed','=',True)]" />
+                    <field name="first_name" string="First Name" domain="[('first_name','ilike',self.first_name)]"/>
+                    <field name="last_name" string="Last Name" domain="[('last_name','ilike',self.last_name)]"/>
+                    <field name="account_number" string="Account Number"
+                           domain="[('account_number','ilike',self.account_number)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="amgl.customer_form_pivot" model="ir.ui.view">
+            <field name="name">Customer</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <graph string="Customer Analysis" disable_linking="True">
+                    <field name="full_name" type="col"/>
+                    <field name="first_name" type="row"/>
+                    <field name="customer_order_lines2" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="add_notes_wizard" model="ir.ui.view">
+            <field name="name">Add Notes</field>
+            <field name="model">amgl.order_line_notes</field>
+            <field name="arch" type="xml">
+                <form string="Add Notes">
+
+                    <group>
+                        <field name="batches" widget="selection"/>
+                        <field name="user_role" invisible="1"/>
+                        <field string="Deposits" name="product_order_lines"
+                               default_order='state desc'>
+                            <tree colors="purple:notes_boolean == True;grey:notes_boolean == False"
+                                  groups="amgl.group_amark_admins,amgl.group_amark_custodian,amgl.group_amark_sub_admins">
+                                <field name="products" string="Product"/>
+                                <field name="commodity"/>
+                                <field name="total_received_quantity" class="oe_edit_only" col_border="1"
+                                       string="Quantity"/>
+                                <field name="temp_received_weight" string="Total Weight" class="oe_edit_only"
+                                       col_border="1"/>
+                                <field name="date_for_customer_metal_activitiy" string="Date" class="oe_edit_only"
+                                       col_border="1"/>
+                                <field name="batch_number" string="Trans. Ref."/>
+                                <field name="notes_boolean" invisible="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="add_notes_clicked" invisible="1"/>
+                        <field name="notes" string="Product Note" attrs="{'invisible':[('add_notes_clicked', '=', False)], 'readonly':[('user_role', '=', 'Custodian')]}"/>
+
+                    </group>
+                    <footer>
+                        <button name="save_notes" attrs="{'invisible':[('user_role', '=', 'Custodian')]}" type="object" string="Save" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="amgl.customer_form" model="ir.ui.view">
+            <field name="name">Customer</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <form string="Create New Customer" duplicate="0">
+                    <sheet>
+                        <group colspan="4">
+                            <group>
+                                <field name="user_role" invisible="1"/>
+                                <field name="is_admin" invisible="1"/>
+                                <field name="id" invisible="1"/>
+                                <field name="is_custodian" invisible="1"/>
+                                <field name="is_vault" invisible="1"/>
+                                <field name="is_o2m" invisible="1"/>
+                                <field name="state" invisible="1"/>
+                                <field name="is_goldstar" invisible="1"/>
+                                <field name="is_account_closed" invisible="1"/>
+                                <field name="custodian_edit" invisible="1"/>
+                                <field name="is_grace_period_value_ever_given" invisible="1"/>
+                                <field name="account_type_restricted_group" invisible="1"/>
+                                <field name="first_name"
+                                       attrs="{'readonly':['|',('is_vault', '=', True)]}"/>
+                                <field name="last_name"
+                                       attrs="{'readonly':['|',('is_vault', '=', True)]}"/>
+                                <field name="account_number"
+                                       attrs="{'readonly':['|',('is_vault', '=', True)]}"/>
+                                <!--<field name="grace_period" attrs="{'readonly':[('user_role', '=', 'SubAdmin'),('id', '>', 0),('is_grace_period_value_ever_given', '=', True)]}"   string="No Fees Months" groups="amgl.group_amark_admins,amgl.group_amark_sub_admins" help="Grace Period Duration will be calculated from first deposit date." />-->
+                                <field name="is_account_closed" string="Account Closed" attrs="{'readonly':[('user_role', 'not in', ['Admin','SubAdmin'])]}"/>
+                                <field name="gst_account_number" string="GoldStar Account Number"
+                                       attrs="{'readonly':[('is_vault', '=', True)], 'invisible':[('is_goldstar','=',False)]}"/>
+                            </group>
+                            <group>
+                                <field name="custodian_edit_not_allowed" invisible="1"/>
+                                <field name="date_opened"
+                                       attrs="{'readonly':['|',('is_vault', '=', True)]}"/>
+                                <field name="account_type"
+                                       attrs="{'readonly':['|',('is_vault', '=', True),'|',('custodian_edit_not_allowed', '=', True)]}"
+                                />
+                                <field name="custodian_id" options='{"no_open": True}'
+                                       attrs="{'readonly':['|','|',('is_vault', '=', True),('is_custodian', '=', True),('custodian_edit_not_allowed', '=', True)]}"/>
+                                <field name="customer_notes"
+                                       attrs="{'readonly':['|',('is_vault', '=', True)]}"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <!--Current Inventory-->
+                            <page string="Current Inventory">
+
+                                <field name="customer_order_lines2"
+                                       attrs="{'readonly':['|','|',('is_custodian','=', True),('is_o2m','=', False),('is_account_closed','=', True)]}"
+                                       context="{'default_is_deposit_related': True,'group_by':'products'}"
+                                       groups="amgl.group_amark_admins,amgl.group_amark_vault,amgl.group_amark_custodian,amgl.group_amark_sub_admins"
+                                       domain="[('state','=','completed')]" default_order='state desc'
+                                       widget="one2many_list">
+                                    <h4 style="float:right;">
+                                        <field name="total_received_quantity"/>
+                                    </h4>
+                                    <tree editable="bottom"
+                                          colors="purple:notes_boolean == True;grey:notes_boolean == False"
+                                          groups="amgl.group_amark_admins,amgl.group_amark_vault,amgl.group_amark_custodian,amgl.group_amark_sub_admins">
+                                        <field name="is_deposit_related" invisible="1"/>
+                                        <field name="batch_email_sent" invisible="1"/>
+                                        <field name="is_admin" invisible="1"/>
+                                        <field name="user_role" invisible="1"/>
+                                        <field name="id" invisible="1"/>
+                                        <field style="color:red !important;" string="Product" name="products"
+                                               attrs="{'readonly': [('id', '>', 0)]}"/>
+                                        <field name="gs_product_code" attrs="{'readonly':True}" invisible="1"/>
+                                        <field name="product_code" string="Amark Code" attrs="{'readonly':True}"/>
+                                        <field name="commodity" class="commodity_width"/>
+                                        <field name="total_received_quantity" widget="regex_mask"
+                                               data-inputmask-regex="(^[1-9][0-9]?[0-9]?[0-9]?[0-9]?$)"
+                                               attrs="{'readonly': [('id', '>', 0)]}" class="oe_edit_only"
+                                               col_border="1" string="Quantity"/>
+                                        <field name="temp_received_weight" string="Total Weight" class="oe_edit_only"
+                                               col_border="1"/>
+                                        <field name="date_received" string="Latest Deposit Date"
+                                               attrs="{'readonly': [('id', '>', 0)]}"
+                                               class="oe_edit_only" col_border="1"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="notes_boolean" invisible="1"/>
+                                        <button name="launch_notes_wizard" context="{'ol_id':active_id}" type="object"
+                                            string="Add Notes" icon="fa-lg fa-pencil-square" />
+                                    </tree>
+                                </field>
+                                <group class="float-right">
+                                    <div>
+                                        <table style="width:55% !important;float:right;margin-right:-40px;">
+                                            <thead>
+                                                <tr style="border:1px solid #D5D5D5;border-bottom:1px solid black !important;">
+                                                    <th style="border-left: 1px solid #D5D5D5;padding: 3px;width:25%"></th>
+                                                    <th style="border-left: 1px solid #D5D5D5;padding: 3px;width:25%">
+                                                        Total Pieces
+                                                    </th>
+                                                    <th style="border-left: 1px solid #D5D5D5;padding: 3px;width:25%">
+                                                        Total Weight
+                                                    </th>
+                                                    <th style="border-left: 1px solid #D5D5D5;padding: 3px;width:25%">
+                                                        Total Value
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr style="border:1px solid #D5D5D5;border-top:1px solid black !important;">
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;">Gold</td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="total_gold"/>
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="c_gold_weight"/>
+                                                        oz
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        $
+                                                        <field name="c_total_gold_value"/>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border:1px solid #D5D5D5;">
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;">Silver</td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="total_silver"/>
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="c_silver_weight"/>
+                                                        oz
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        $
+                                                        <field name="c_total_silver_value"/>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border:1px solid #D5D5D5;">
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;">Platinum
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="total_platinum"/>
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="c_platinum_weight"/>
+                                                        oz
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        $
+                                                        <field name="c_total_platinum_value"/>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border:1px solid #D5D5D5;border-bottom:1px solid black !important;">
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;">Palladium
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="total_palladium"/>
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="c_palladium_weight"/>
+                                                        oz
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        $
+                                                        <field name="c_total_palladium_value"/>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border:1px solid #D5D5D5;">
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;">Grand
+                                                        Total
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="total"/>
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        <field name="c_total_weight"/>
+                                                        oz
+                                                    </td>
+                                                    <td style="border-left: 1px solid #D5D5D5;padding: 3px;text-align:right;">
+                                                        $
+                                                        <field name="c_total_value"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </group>
+                            </page>
+                            <!--Current Inventory-->
+
+                            <!--Big Bar Inventory
+                            <page string="Big Bar Inventory">
+
+                                <field name="big_bar_order_lines"
+                                       attrs="{'readonly':['|',('is_custodian','=', True),('is_o2m','=', False), ('id', '>', 0)]}"
+                                       context="{'default_is_deposit_related': True,'group_by':'products'}"
+                                       groups="amgl.group_amark_admins,amgl.group_amark_vault,amgl.group_amark_custodian,amgl.group_amark_sub_admins">
+                                    <tree editable="top" groups="amgl.group_amark_admins,amgl.group_amark_vault,amgl.group_amark_custodian,amgl.group_amark_sub_admins">
+                                        <field name="is_deposit_related" invisible="1"/>
+                                        <field name="batch_email_sent" invisible="1"/>
+                                        <field name="is_admin" invisible="1"/>
+                                        <field name="user_role" invisible="1"/>
+                                        <field name="id" invisible="1"/>
+                                        <field string="Location" name="bb_location"/>
+                                        <field name="products" options="{'no_create':True,'no_create_edit': True,'no_open': True}" domain="[('weight_per_piece', '&gt;', 900), ('weight_per_piece', '&lt;', 1100), ('weight_unit', '=', 'oz')]"/>
+                                        <field name="bb_brand" string="Brand" options="{'no_create':True,'no_create_edit': True,'no_open': True}"/>
+                                        <field name="bb_serial_number" string="SerialNo"/>
+                                        <field name="total_received_quantity" string="Qty"/>
+                                        <field name="bb_purity" string="Purity"/>
+                                        <field name="bb_fine_troy" string="Fine Troy Oz."/>
+                                        <field name="date_received" string="Date Received" class="oe_edit_only" col_border="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            Big Bar Inventory-->
+
+                            <!--Customer Metal Activity-->
+                            <page string="Customer Metal Activity"
+                                  groups="amgl.group_amark_admins,amgl.group_amark_vault,amgl.group_amark_sub_admins,amgl.group_amark_custodian">
+                                <field name="customer_order_lines"
+                                       default_order='state desc'>
+                                    <tree decoration-bf="state in ('expecting','pending','completed','in_progress')"
+                                          decoration-danger="state in ['expecting','in_progress']"
+                                          decoration-success="state=='completed'"
+                                          groups="amgl.group_amark_admins,amgl.group_amark_custodian,amgl.group_amark_sub_admins">
+                                        <field name="products" string="Product"/>
+                                        <field name="commodity"/>
+                                        <field name="total_received_quantity" widget="regex_mask"
+                                               data-inputmask-regex="(^[1-9][0-9]?[0-9]?[0-9]?[0-9]?$)"
+                                               class="oe_edit_only" col_border="1"
+                                               string="Quantity"/>
+                                        <field name="temp_received_weight" string="Total Weight" class="oe_edit_only"
+                                               col_border="1"/>
+                                        <field name="date_for_customer_metal_activitiy" string="Date"
+                                               class="oe_edit_only" col_border="1"/>
+                                        <field name="batch_number" string="Trans. Ref."/>
+                                        <field name="merged_notes" string="Note"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <!--Customer Metal Activity-->
+
+                            <!--Completed withdrawals/deposits-->
+                            <page string="Completed Withdrawals/Deposits"
+                                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_custodian">
+                                <field name="completed_mmr" domain="[('total_received_quantity','!=',0)]"
+                                       default_order='create_date desc'>
+                                    <tree default_order='create_date desc'
+                                          groups="amgl.group_amark_admins,amgl.group_amark_custodian,amgl.group_amark_sub_admins">
+                                        <field name="batch_number" string="Batch Number"/>
+                                        <field name="create_date" widget="date" string="Date Created"/>
+                                        <button name="download_mmr_pdf" type="object"
+                                                string="Click to download PDF version"
+                                                icon="fa fa-file-pdf-o"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <!--Completed withdrawals/deposits-->
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="amgl.customer_tree" model="ir.ui.view">
+            <field name="name">Create New Customer</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <tree string="Create New Customer" duplicate="0">
+                    <button name="download_full_inventory_report" groups="amgl.group_amark_admins" type="object"
+                            string="Full Inv. Report"/>
+                    <button name="print_single_report_customer_current_inventory" groups="amgl.group_amark_custodian"
+                            type="object" class="btn btn-primary btn-sm o_list_button_add"
+                            string="View Inventory Report"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="is_account_closed" string="Account Close"  invisible="1"/>
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="account_number"/>
+                    <field name="date_opened"/>
+                    <field name="customer_first_deposit_date"/>
+                    <field name="custodian_id"/>
+                    <field name="account_type"/>
+                    <field name="c_total_weight"/>
+                    <field name="total_account_value" string="Total Account Value"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

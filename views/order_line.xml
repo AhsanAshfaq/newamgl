@@ -1,0 +1,100 @@
+<odoo>
+    <data>
+        <record id="amgl.order_line_form_view" model="ir.ui.view">
+            <field name="name">Order Line Form</field>
+            <field name="model">amgl.order_line</field>
+            <field name="arch" type="xml">
+                <form string="Order Lines Form" create="false">
+                   <group>
+                        <field name="notes" />
+                        <field name="show_footer" invisible="1"/>
+                   </group>
+                   <group  attrs="{'invisible' :[('show_footer','=',False)]}">
+                       <footer>
+                           <button name="save_notes" class="btn btn-primary btn-sm o_form_button_save" type="object" string="Save"/>
+                           <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
+                       </footer>
+                   </group>
+
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+        <record id="email_wizard_form" model="ir.ui.view">
+            <field name="name">Deposit Per Batch Email</field>
+            <field name="model">amgl.deposit.email.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Deposit Per Batch Email">
+                    <sheet>
+                        <style>
+                            .note-editable.panel-body{
+                                height: 318px !important;
+                            }
+                        </style>
+                        <group>
+                            <field name="email_body"/>
+                        </group>
+                        <group colspan="4">
+                            <group>
+                                <field name="first_deposit_date" readonly="True"/>
+                                <field name="customer_grace_period" readonly="True"/>
+                                <field name="completed_deposits_before" readonly="True" string="Completed Deposits"/>
+                                <field name="deposit_bonus_days_remaining" attrs="{'invisible':[('customer_grace_period', '=', 'None')]}" readonly="True"/>
+                                <field name="deposit_fees" widget="regex_mask" placeholder="0.00" data-inputmask-regex="(^[0-9]{1,6}(\.[0-9]{1,2})$)"
+                                       attrs="{'readonly':['|', '|', ('deposit_bonus_days_remaining', 'not in', ['No bonus period allotted !', 'Bonus Time Passed !']), ('existing_deposit_batch', '=', True)]}"/>
+                            </group>
+                            <group>
+                                <field name="existing_deposit_batch" type="checkbox"/>
+                                <field name="existing_batch_number" widget="selection" attrs="{'invisible':[('existing_deposit_batch', '=', False)]}"/>
+                            </group>
+                        </group>
+                        <footer>
+                                <button name="send_deposit_batch_email" type="object" string="Send Email"  class="oe_highlight"/>
+                                 OR
+                                <button special="cancel" string="Cancel"/>
+                        </footer>
+                    </sheet>
+
+
+                </form>
+            </field>
+        </record>
+
+        <record id="amgl.order_line_receive_tree_view" model="ir.ui.view">
+            <field name="name">Deposit Per Batch</field>
+            <field name="model">amgl.order_line</field>
+            <field name="arch" type="xml">
+                <tree string="Deposit Per Batch" domain="[('batch_email_sent', '=', False)]" default_order='create_date desc' edit="false" delete="false" duplicate="0" create="false">
+                      <!--context="{'group_by' : batch_number}"-->
+                    <button name="update_email_indicator_for_batch" type="object"
+                                                string="Remove" icon="fa fa-minus-square" />
+                    <button name="show_deposit_pdf" type="object"
+                                                string="Preview Batch Details" icon="fa fa-file-pdf-o" />
+                    <button name="launch_email_wizard" type="object"
+                                                string="Send Email" icon="fa-lg fa-envelope" />
+                    <field name="batch_number" string="Batch Number" attrs="{'readonly':True}"/>
+                    <field name="customer_account_number" string="Account Number" attrs="{'readonly':True}"/>
+                    <field name="date_received" widget="date" string="Deposit Date"/>
+                    <field name="customer_id" string="Name" attrs="{'readonly':True}"/>
+                    <field name="products" attrs="{'readonly':True}"/>
+                    <field name="commodity"/>
+                    <field name="total_received_quantity" string="Total Received Qty. " attrs="{'readonly':True}"/>
+                    <field name="temp_received_weight" string="Total Received Weight"/>
+                </tree>
+            </field>
+        </record>
+        <record id="amgl.order_line_search" model="ir.ui.view">
+            <field name="name">Deposit Per Batch Search</field>
+            <field name="model">amgl.order_line</field>
+            <field name="arch" type="xml">
+                <search string="Deposit Per Batch">
+                    <!--<filter name="group_batch_number" string="Group By Batch Number" icon="terp-partner" context="{'group_by':'batch_number'}"/>-->
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

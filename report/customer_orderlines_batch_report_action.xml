@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Deposit Batch Details"
+            id="action_customer_orderlines_batch"
+            model="amgl.order_line"
+            report_type="qweb-pdf"
+            name="amgl.customer_orderlines_batch_report"
+            file="amgl.customer_orderlines_batch_report"
+            attachment_use="False"
+         />
+    </data>
+</odoo>

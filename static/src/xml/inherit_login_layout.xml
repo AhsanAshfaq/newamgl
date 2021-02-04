@@ -1,0 +1,7 @@
+<odoo>
+    <template id="login_layout_no_db" inherit_id="web.login_layout" name="Login Layout">
+        <xpath expr="//div[contains(@class, 'o_database_list')]/div[2]" position="replace">
+            <div></div>
+        </xpath>
+    </template>
+</odoo>

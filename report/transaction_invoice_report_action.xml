@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Transaction Invoice"
+            id="action_report_transaction_invoice"
+            model="amgl.fees"
+            report_type="qweb-pdf"
+            name="amgl.transaction_invoice_report_template"
+            file="amgl.transaction_invoice_report_template"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+            attachment_use="True"
+         />
+    </data>
+</odoo>

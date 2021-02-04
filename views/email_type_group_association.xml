@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="amgl.email_type_group_association_form" model="ir.ui.view">
+            <field name="name">Email Type Group Association</field>
+            <field name="model">amgl.email.type.group.association</field>
+            <field name="arch" type="xml">
+                <form string="Email Type Group Association">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="email_type" string="Closing Month"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="amgl.email_type_group_association_tree" model="ir.ui.view">
+            <field name="name">Email Type Group Association</field>
+            <field name="model">amgl.email.type.group.association</field>
+            <field name="arch" type="xml">
+                <tree string="Email Type Group Association">
+                    <field name="email_type" string="Email Type"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

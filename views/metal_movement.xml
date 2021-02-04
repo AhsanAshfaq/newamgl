@@ -1,0 +1,188 @@
+<odoo>
+    <data>
+        <record id="amgl.metal_movement" model="ir.ui.view">
+            <field name="name">Withdrawal Request</field>
+            <field name="model">amgl.metal_movement</field>
+            <field name="arch" type="xml">
+                <search string="Search Withdrawal">
+                    <filter string="Not Completed" name="not_completed"  domain="[('state','!=','completed')]"/>
+                    <filter string="Completed" name="completed"  domain="[('state','=','completed')]"/>
+                    <filter string="InProgess" name="inprogress"  domain="[('state','=','in_progress')]"/>
+                    <filter string="Rejected" name="rejected"  domain="[('state','=','rejected')]"/>
+                    <filter string="Created" name="created"  domain="[('state','=','created')]"/>
+                </search>
+            </field>
+        </record>
+        <record id="form_metal_movement" model="ir.ui.view">
+            <field name="name">Withdrawal Request</field>
+            <field name="model">amgl.metal_movement</field>
+            <field name="arch" type="xml">
+                <form string="Withdrawal" duplicate="0">
+                    <sheet>
+                        <group>
+                            <field name="user_role" invisible="1"/>
+                            <field name="id" invisible="1"/>
+                            <field name="is_first_approve" invisible="1"/>
+                            <field name="is_second_approve" invisible="1"/>
+                            <field name="disable_custodian" invisible="1"/>
+                            <group style="float:left;" string="Withdrawal Request">
+                                <field name="mmr_number" attrs="{'readonly':True}"/>
+                                <field name="date_create" string="Date Created :" attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"/>
+                                <field name="reference" string="Reference :" attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"/>
+                                <field name="metal_movement_type" string="Withdrawal Type :" attrs="{'readonly': ['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed') ,'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"/>
+                                <field name="special_instruction" string="Special Instruction :" widget="html" attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"/>
+                            </group>
+                            <group style="float:right;" colspan="1"
+                                   string="Move Metal From">
+                                <field name="custodian" string="Custodian :"  options="{'no_create':True,'no_create_edit': True,'no_open': True}" attrs="{'readonly':['|','|','|','|','|',('user_role', '=', 'Vault'),('user_role', '=', 'SubAdmin'),('is_first_approve', '=', True),('disable_custodian', '=', True),('is_second_approve', '=', True),('state', '=', 'completed')]}"/>
+                                <field name="is_o2m" invisible="1"/>
+                                <field name="customer" string="Customer :" domain="[('custodian_id', '=', custodian),('customer_order_lines2', '!=', False)]"
+                                       options="{'no_create':True,'no_create_edit': True,'no_open': True}" attrs="{'readonly':['|','|','|','|','|',('user_role', '=', 'Vault'),('user_role', '=', 'SubAdmin'),('user_role', '=', 'Admin'),('is_first_approve', '=', True),('is_second_approve', '=', True),('state', '=', 'completed')]}"/>
+                                <field name="mmf_account_number" string="Account Number :" attrs="{'readonly':True}"/>
+                                <field name="mmf_account_type" string="Account Type :" attrs="{'readonly': True}"/>
+                            </group>
+                            <group colspan="1" style="float:right;" string="Move Metal To">
+                                <field name="mmt_name" string="Name :" attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"/>
+                                <field name="mmt_address" string="Address :"
+                                       attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')], 'invisible':[('metal_movement_type', '=', 'IT')]}"/>
+                                <field name="mmt_account_number" string="Account # (if applicable) :" attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"/>
+                                <field name="mmt_company" string="Company :"
+                                       attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')], 'invisible':[('metal_movement_type','not in',('TRANSAC','PICKUP','IT'))]}"/>
+                                <field name="pickup_date" string="Pickup Date / Time:"
+                                       attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')], 'invisible':[('metal_movement_type','not in',('TRANSAC','PICKUP'))], 'required': [('metal_movement_type','in',('TRANSAC','PICKUP'))]}"/>
+                            </group>
+                            <group colspan="1" style="float:right;" string="Authorization">
+                                <field name="first_approve" string="Approved By 1 :"
+                                       attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"
+                                       domain="[('id', '!=', uid), ('id', '!=', second_approve),('groups_id','in',[15])]"
+                                       options="{'no_create':True,'no_create_edit': True,'no_open': True}"/>
+                                <field name="second_approve" string="Approved By 2 :"
+                                       attrs="{'readonly':['|',('user_role', '=', 'Vault'),'|',('is_first_approve', '=', True),'|',('is_second_approve', '=', True),'|',('state', '=', 'completed'),'&amp;',('user_role', '=', 'SubAdmin'),('state', '!=', 'rejected')]}"
+                                       domain="[('id', '!=', uid), ('id', '!=', first_approve),('groups_id','in',[15])]"
+                                       options="{'no_create':True,'no_create_edit': True,'no_open': True}"/>
+                                <field name="vault_review" invisible="1" string="Reviewer :"
+                                       options="{'no_create':True,'no_create_edit': True,'no_open': True}"/>
+                                <field name="vault_complete" invisible="1" string="Complete :"
+                                       options="{'no_create':True,'no_create_edit': True,'no_open': True}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group style="float:left;" groups="amgl.group_amark_admins,amgl.group_amark_vault" string="Request Completed :">
+
+                                <field name="show_vault_completed" invisible="1"/>
+                                <field name="show_vault_review" invisible="1"/>
+
+                                <field name="vault_complete"
+                                       domain="[('id', '!=', vault_review)]"
+                                       attrs="{'readonly':['|', ('state', '=', 'completed'), ('show_vault_completed','=',False)]}"
+                                       options="{'no_create_edit': True,'no_open': True}" string="Completed By : "/>
+                                <field name="vault_review"
+                                       attrs="{'readonly':['|', ('state', '=', 'completed'), ('show_vault_review','=',False)]}"
+                                       domain="[('id', '!=', vault_complete)]"
+                                       options="{'no_create_edit': True,'no_open': True}" string="Reviewed By : "/>
+                            </group>
+                        </group>
+                        <field name="grace_period_validation" style="color:red;font-size:16px;font-weight:bold;border-bottom: 0px !important;text-align: center;margin-bottom: 35px;" readonly="True" attrs="{'invisible': [('grace_period_validation', '=', '')]}" />
+                        <notebook>
+                            <page string="Metals To Be Moved">
+                                <field name="order_lines" context="{'default_customer_id': customer}"
+                                       attrs="{'readonly':['|','|','|','|',('is_o2m','=', False),('user_role', '=', 'Vault'),('is_first_approve', '=', True),('is_second_approve', '=', True),('state', '=', 'completed')]}">
+                                    <tree editable="bottom">
+                                        <field name="id" invisible="1"/>
+                                        <field name="products"
+                                               string="Product Name" on_change="on_change_customer(parent.customer)" options="{'no_create':True,'no_create_edit': True,'no_open': True}"/>
+                                        <field name="quantity" string="Quantity" widget="regex_mask" data-inputmask-regex="(^[1-9][0-9]?[0-9]?[0-9]?[0-9]?$)"/>
+                                        <field name="customer_id" string="Customer Id" invisible="1"/>
+                                        <field name="weight" string="Weight"/>
+                                        <field name="total_weight" string="Total Weight"/>
+                                        <field name="merged_notes" string="Note"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Transaction Fees" groups="amgl.group_amark_admins,amgl.group_amark_sub_admins">
+                                <field name="customer_fees" attrs="{'readonly':[('state', '=', 'completed')]}">
+                                    <tree editable="bottom">
+                                        <field name="administrative_fees" widget="regex_mask" data-inputmask-regex="(^[0-9]{1,6}(\.[0-9]{1,2})$)" />
+                                        <field name="outbound_fees" widget="regex_mask" data-inputmask-regex="(^[0-9]{1,6}(\.[0-9]{1,2})$)"/>
+                                        <field name="shipment_fees" widget="regex_mask" data-inputmask-regex="(^[0-9]{1,6}(\.[0-9]{1,2})$)" />
+                                        <field name="other_fees" widget="regex_mask" data-inputmask-regex="(^[0-9]{1,6}(\.[0-9]{1,2})$)" />
+                                        <field name="fee_note" />
+                                        <field name="total_fees" readonly="True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <separator string="Packages Tracking Numbers"/>
+                        <group>
+                            <field name="id" invisible="1"/>
+                            <field name="number_of_packages" widget="selection" attrs="{'readonly':['|',('user_role', '=', 'Vault'),('state', '=', 'completed')]}"/>
+                            <field name="p1_boolean" invisible="1"/>
+                            <field name="p2_boolean" invisible="1"/>
+                            <field name="p3_boolean" invisible="1"/>
+                            <field name="p4_boolean" invisible="1"/>
+                            <field name="p5_boolean" invisible="1"/>
+                            <field name="p6_boolean" invisible="1"/>
+                            <field name="p7_boolean" invisible="1"/>
+                            <field name="p8_boolean" invisible="1"/>
+                            <field name="p9_boolean" invisible="1"/>
+                            <field name="p10_boolean" invisible="1"/>
+                            <field name="p11_boolean" invisible="1"/>
+                            <field name="p12_boolean" invisible="1"/>
+                            <field name="p13_boolean" invisible="1"/>
+                            <field name="p14_boolean" invisible="1"/>
+                            <field name="p15_boolean" invisible="1"/>
+                            <field name="p16_boolean" invisible="1"/>
+                            <field name="p17_boolean" invisible="1"/>
+                            <field name="p18_boolean" invisible="1"/>
+                            <field name="p19_boolean" invisible="1"/>
+                            <field name="p20_boolean" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="package1" attrs="{'invisible':[('p1_boolean','=', False)]}"/>
+                            <field name="package2" attrs="{'invisible':[('p2_boolean','=', False)]}"/>
+                            <field name="package3" attrs="{'invisible':[('p3_boolean','=', False)]}"/>
+                            <field name="package4" attrs="{'invisible':[('p4_boolean','=', False)]}"/>
+                            <field name="package5" attrs="{'invisible':[('p5_boolean','=', False)]}"/>
+                            <field name="package6" attrs="{'invisible':[('p6_boolean','=', False)]}"/>
+                            <field name="package7" attrs="{'invisible':[('p7_boolean','=', False)]}"/>
+                            <field name="package8" attrs="{'invisible':[('p8_boolean','=', False)]}"/>
+                            <field name="package9" attrs="{'invisible':[('p9_boolean','=', False)]}"/>
+                            <field name="package10" attrs="{'invisible':[('p10_boolean','=', False)]}"/>
+                            <field name="package11" attrs="{'invisible':[('p11_boolean','=', False)]}"/>
+                            <field name="package12" attrs="{'invisible':[('p12_boolean','=', False)]}"/>
+                            <field name="package13" attrs="{'invisible':[('p13_boolean','=', False)]}"/>
+                            <field name="package14" attrs="{'invisible':[('p14_boolean','=', False)]}"/>
+                            <field name="package15" attrs="{'invisible':[('p15_boolean','=', False)]}"/>
+                            <field name="package16" attrs="{'invisible':[('p16_boolean','=', False)]}"/>
+                            <field name="package17" attrs="{'invisible':[('p17_boolean','=', False)]}"/>
+                            <field name="package18" attrs="{'invisible':[('p18_boolean','=', False)]}"/>
+                            <field name="package19" attrs="{'invisible':[('p19_boolean','=', False)]}"/>
+                            <field name="package20" attrs="{'invisible':[('p20_boolean','=', False)]}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="tree_metal_movement" model="ir.ui.view">
+            <field name="name">Withdrawal</field>
+            <field name="model">amgl.metal_movement</field>
+            <field name="arch" type="xml">
+                <tree string="Withdrawal Request" duplicate="0">
+                    <field name="mmr_number" string="Withdrawal#"/>
+                    <field name="customer" string="Customer"/>
+                    <field name="custodian" string="Custodian"/>
+                    <field name="metal_movement_type" string="Withdrawal Type"/>
+                    <field name="first_approve"/>
+                    <field name="is_first_approve" string="First Approved"/>
+                    <field name="second_approve"/>
+                    <field name="is_second_approve" string="Second Approved"/>
+                    <field name="v_complete" string="Completed"/>
+                    <field name="v_review" string="Reviewed"/>
+                    <field name="date_create" string="Date Created"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

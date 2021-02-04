@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record id="amgl_category" model="ir.module.category">
+            <field name="name">AMARK Account Type</field>
+            <field name="sequence" eval="1"/>
+        </record>
+        <record id="group_amark_admins" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="amgl_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="group_amark_custodian" model="res.groups">
+            <field name="name">Custodian</field>
+            <field name="category_id" ref="amgl_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="group_amark_sub_admins" model="res.groups">
+            <field name="name">Sub-Admins</field>
+            <field name="category_id" ref="amgl_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="group_amark_vault" model="res.groups">
+            <field name="name">Vault</field>
+            <field name="category_id" ref="amgl_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="group_amark_authorizer" model="res.groups">
+            <field name="name">Authorizers</field>
+            <field name="category_id" ref="amgl_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+    </data>
+</odoo>

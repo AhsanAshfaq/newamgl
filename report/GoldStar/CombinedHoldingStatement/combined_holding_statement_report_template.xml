@@ -1,0 +1,427 @@
+<odoo>
+    <template id="combined_holding_statement_report_template_body">
+        <t t-set="gold_products" t-value="docs.get_products_for_combined_holding_statement('Gold')"/>
+        <t t-set="silver_products" t-value="docs.get_products_for_combined_holding_statement('Silver')"/>
+        <t t-set="platinum_products" t-value="docs.get_products_for_combined_holding_statement('Platinum')"/>
+        <t t-set="palladium_products" t-value="docs.get_products_for_combined_holding_statement('Palladium')"/>
+
+        <t t-if="not gold_products and not silver_products and not platinum_products and not palladium_products">
+            <h1 style="text-align:center !important;">No Data Found.</h1>
+        </t>
+        <t t-if="len(gold_products) > 0">
+            <t t-set="gold_total" t-value="0"/>
+            <t t-set="total_gold_ounces" t-value="0"/>
+            <t t-set="gold_seg_overall_total" t-value="0"/>
+            <t t-set="gold_non_seg_overall_total" t-value="0"/>
+            <h3 style="font-size:15px !important;font-weight:bold;text-align: left !important;text-decoration:underline;">
+                GOLD
+            </h3>
+            <table style="border-collapse:separate;border-spacing:1px;margin-bottom:30px !important;width:100%;font-family:monospace !important;font-size:9px !important;">
+                <thead>
+                    <tr style="border-bottom: 2px solid black !important;">
+                        <th style="width:20%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Code
+                        </th>
+                        <th style="width:45%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Description
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Segregated
+                        </th>
+                        <th style="width:15%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Non-Segregated
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <t t-foreach="gold_products" t-as="product">
+                        <tr>
+                            <td>
+                                <span t-field="product.gs_product_code"/>
+                            </td>
+                            <td>
+                                <span t-field="product.goldstar_name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Segregated')"/>
+                                <t t-set="gold_seg_overall_total" t-value="gold_seg_overall_total + seg_total"/>
+                                <span t-esc="'{0:,.2f}'.format(seg_total)"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="non_seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Commingled')"/>
+                                <t t-set="gold_non_seg_overall_total" t-value="gold_non_seg_overall_total + non_seg_total"/>
+                                <span t-esc="'{0:,.2f}'.format(non_seg_total)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(seg_total + non_seg_total)"/>
+                            </td>
+                        </tr>
+                        <t t-set="gold_total" t-value="gold_total + (seg_total + non_seg_total)"/>
+                        <t t-set="total_gold_ounces" t-value="total_gold_ounces + docs.get_product_ounces(product, seg_total + non_seg_total)"/>
+                    </t>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(gold_seg_overall_total))"/>
+                        </td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(gold_non_seg_overall_total))"/>
+                        </td>
+                        <td style="text-align:right !important;padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(gold_total))"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="padding-top:15px;text-align:right !important;">
+                           <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;"> Total Ounces : </span>
+                            <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;" t-esc="'{0:,.2f}'.format(total_gold_ounces)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-if="len(silver_products) > 0">
+            <t t-set="silver_total" t-value="0"/>
+            <t t-set="total_silver_ounces" t-value="0"/>
+            <t t-set="silver_seg_overall_total" t-value="0"/>
+            <t t-set="silver_non_seg_overall_total" t-value="0"/>
+            <h3 style="font-size:15px !important;font-weight:bold;text-align: left !important;text-decoration:underline;">
+                SILVER
+            </h3>
+            <table style="border-collapse:separate;border-spacing:1px;margin-bottom:30px !important;width:100%;font-family:monospace !important;font-size:9px !important;">
+                <thead>
+                    <tr style="border-bottom: 2px solid black !important;">
+                        <th style="width:20%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Code
+                        </th>
+                        <th style="width:45%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Description
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Segregated
+                        </th>
+                        <th style="width:15%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Non-Segregated
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <t t-foreach="silver_products" t-as="product">
+                        <tr>
+                            <td>
+                                <span t-field="product.gs_product_code"/>
+                            </td>
+                            <td>
+                                <span t-field="product.goldstar_name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Segregated')"/>
+                                <span t-esc="'{0:,.2f}'.format(seg_total)"/>
+                                <t t-set="silver_seg_overall_total" t-value="silver_seg_overall_total + seg_total"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="non_seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Commingled')"/>
+                                <span t-esc="'{0:,.2f}'.format(non_seg_total)"/>
+                                <t t-set="silver_non_seg_overall_total" t-value="silver_non_seg_overall_total + non_seg_total"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(seg_total + non_seg_total)"/>
+                            </td>
+                        </tr>
+                        <t t-set="silver_total" t-value="silver_total + (seg_total + non_seg_total)"/>
+                        <t t-set="total_silver_ounces" t-value="total_silver_ounces + docs.get_product_ounces(product, seg_total + non_seg_total)"/>
+                    </t>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(silver_seg_overall_total))"/>
+                        </td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(silver_non_seg_overall_total))"/>
+                        </td>
+                        <td style="text-align:right !important;padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(silver_total))"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="padding-top:15px;text-align:right !important;">
+                           <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;"> Total Ounces : </span>
+                            <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;" t-esc="'{0:,.2f}'.format(total_silver_ounces)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-if="len(platinum_products) > 0">
+            <t t-set="platinum_total" t-value="0"/>
+            <t t-set="total_platinum_ounces" t-value="0"/>
+            <t t-set="platinum_seg_overall_total" t-value="0"/>
+            <t t-set="platinum_non_seg_overall_total" t-value="0"/>
+            <h3 style="font-size:15px !important;font-weight:bold;text-align: left !important;text-decoration:underline;">
+                PLATINUM
+            </h3>
+            <table style="border-collapse:separate;border-spacing:1px;margin-bottom:30px !important;width:100%;font-family:monospace !important;font-size:9px !important;">
+                <thead>
+                    <tr style="border-bottom: 2px solid black !important;">
+                        <th style="width:20%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Code
+                        </th>
+                        <th style="width:45%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Description
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Segregated
+                        </th>
+                        <th style="width:15%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Non-Segregated
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <t t-foreach="platinum_products" t-as="product">
+                        <tr>
+                            <td>
+                                <span t-field="product.gs_product_code"/>
+                            </td>
+                            <td>
+                                <span t-field="product.goldstar_name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Segregated')"/>
+                                <span t-esc="'{0:,.2f}'.format(seg_total)"/>
+                                <t t-set="platinum_seg_overall_total" t-value="platinum_seg_overall_total + seg_total"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="non_seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Commingled')"/>
+                                <span t-esc="'{0:,.2f}'.format(non_seg_total)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(seg_total + non_seg_total)"/>
+                                <t t-set="platinum_non_seg_overall_total"
+                                   t-value="platinum_non_seg_overall_total + non_seg_total"/>
+                            </td>
+                        </tr>
+                        <t t-set="platinum_total" t-value="platinum_total + (seg_total + non_seg_total)"/>
+                        <t t-set="total_platinum_ounces" t-value="total_platinum_ounces + docs.get_product_ounces(product, seg_total + non_seg_total)"/>
+                    </t>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(platinum_seg_overall_total))"/>
+                        </td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(platinum_non_seg_overall_total))"/>
+                        </td>
+                        <td style="text-align:right !important;padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(platinum_total))"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="padding-top:15px;text-align:right !important;">
+                           <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;"> Total Ounces : </span>
+                            <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;" t-esc="'{0:,.2f}'.format(total_platinum_ounces)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-if="len(palladium_products) > 0">
+            <t t-set="palladium_total" t-value="0"/>
+            <t t-set="total_palladium_ounces" t-value="0"/>
+            <t t-set="palladium_seg_overall_total" t-value="0"/>
+            <t t-set="palladium_non_seg_overall_total" t-value="0"/>
+            <h3 style="font-size:15px !important;font-weight:bold;text-align: left !important;text-decoration:underline;">
+                PALLADIUM
+            </h3>
+            <table style="border-collapse:separate;border-spacing:1px;width:100%;font-family:monospace !important;font-size:9px !important;">
+                <thead>
+                    <tr style="border-bottom: 2px solid black !important;">
+                        <th style="width:20%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Code
+                        </th>
+                        <th style="width:45%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:left !important;">
+                            Product Description
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Segregated
+                        </th>
+                        <th style="width:15%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Non-Segregated
+                        </th>
+                        <th style="width:10%;border-bottom: 2px solid black !important;font-size:9px !important;text-align:right !important;">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <t t-foreach="palladium_products" t-as="product">
+                        <tr>
+                            <td>
+                                <span t-field="product.gs_product_code"/>
+                            </td>
+                            <td>
+                                <span t-field="product.goldstar_name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Segregated')"/>
+                                <span t-esc="'{0:,.2f}'.format(seg_total)"/>
+                                <t t-set="palladium_seg_overall_total"
+                                   t-value="palladium_seg_overall_total + seg_total"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="non_seg_total"
+                                   t-value="docs.get_product_count_for_combined_holding_statement(product, 'Commingled')"/>
+                                <span t-esc="'{0:,.2f}'.format(non_seg_total)"/>
+                                <t t-set="palladium_non_seg_overall_total"
+                                   t-value="palladium_non_seg_overall_total + non_seg_total"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(seg_total + non_seg_total)"/>
+                            </td>
+                        </tr>
+                        <t t-set="palladium_total" t-value="palladium_total + (seg_total + non_seg_total)"/>
+                        <t t-set="total_palladium_ounces" t-value="total_palladium_ounces + docs.get_product_ounces(product, seg_total + non_seg_total)"/>
+                    </t>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(palladium_seg_overall_total))"/>
+                        </td>
+                        <td style="padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;text-align:right !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(palladium_non_seg_overall_total))"/>
+                        </td>
+                        <td style="text-align:right !important;padding-top:5px;padding-bottom:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;">
+                            <span t-esc="'{0:,.2f}'.format(float(palladium_total))"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="padding-top:15px;text-align:right !important;">
+                           <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;"> Total Ounces : </span>
+                            <span style="padding:5px;font-size:10px !important;font-weight:bold;border-top:1px solid black !important;border-bottom:1px solid black !important;" t-esc="'{0:,.2f}'.format(total_palladium_ounces)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <div class="oe_structure"/>
+    </template>
+    <template id="combined_holding_statement_report_template">
+        <div class="page" style="height:100%;page-break-inside: always;background-color: white !important;">
+            <style>
+                .text-right{
+                text-align:right !important;
+                padding-left:5px !important;
+                }
+                .page{
+                background-color: white !important;
+                }
+            </style>
+            <div class="oe_structure"/>
+            <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                    <div style="width:20%;float:left;">
+                        <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                             style="color:white !important;height: auto; width: 150px;"/>
+                    </div>
+                    <div style="width:20%;float:right;margin-top:11px;">
+                        <div>
+                            <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                  t-esc="docs.getFormattedDate()"/>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="width:100%;margin-bottom:60px !important;">
+                    <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                        Combined Holding Statement
+                    </h2>
+                    <h3 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                        GoldStar Trust Company
+                    </h3>
+                </div>
+            </div>
+            <t t-call="amgl.combined_holding_statement_report_template_body"/>
+        </div>
+    </template>
+</odoo>

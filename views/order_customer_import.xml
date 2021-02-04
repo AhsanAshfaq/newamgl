@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="amgl.order_csutomer_import" model="ir.ui.view">
+            <field name="name">Import Data</field>
+            <field name="model">amgl.order_customer_import</field>
+            <field name="arch" type="xml">
+                <tree string="Order Customer Import" duplicate="0">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

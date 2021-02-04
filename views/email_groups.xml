@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record id="amgl.email_group_form" model="ir.ui.view">
+            <field name="name">Email Group</field>
+            <field name="model">amgl.email.group</field>
+            <field name="arch" type="xml">
+                <form string="Email Groups">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="emails"/>
+                        </group>
+                        <field name="notification" style="color:grey;font-size:11px;border-bottom: 0px !important;text-align: center;" readonly="True"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="amgl.email_group_tree" model="ir.ui.view">
+            <field name="name">Email Group</field>
+            <field name="model">amgl.email.group</field>
+            <field name="arch" type="xml">
+                <tree string="Email Groups">
+                    <field name="name"/>
+                    <field name="emails"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

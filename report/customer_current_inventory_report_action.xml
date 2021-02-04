@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Customer Current Inventory"
+            id="action_report_customer_current_inventory"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.report_customer_current_inventory"
+            file="amgl.report_customer_current_inventory"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_custodian"
+            attachment_use="True"
+         />
+    </data>
+</odoo>

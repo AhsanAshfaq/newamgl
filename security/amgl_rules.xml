@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!--<record id="amgl_dashboard" model="ir.rule">-->
+        <!--<field name="name">Dashboard Rule</field>-->
+        <!--<field name="model_id" ref="amgl.model_amgl_dashboard"/>-->
+        <!--<field name="groups" eval="[(4, ref('amgl.group_amark_custodian'))]"/>-->
+        <!--<field name="domain_force">[('custodian_id', '=', user.custodian_id.id)]</field>-->
+        <!--<field name="perm_read" eval="True"/>-->
+        <!--<field name="perm_write" eval="False"/>-->
+        <!--<field name="perm_create" eval="False"/>-->
+        <!--<field name="perm_unlink" eval="False"/>-->
+    <!--</record>-->
+
+    <record id="amgl_custodian_dashboard" model="ir.rule">
+        <field name="name">Custodian Wise Users</field>
+        <field name="model_id" ref="amgl.model_amgl_customer"/>
+        <field name="groups" eval="[(4, ref('amgl.group_amark_custodian'))]"/>
+        <field name="domain_force">[('custodian_id', '=',user.custodian_id.id), ('custodian_id', '!=', False)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="amgl_mmr_rule" model="ir.rule">
+        <field name="name">Withdrawal Authorizer Rule</field>
+        <field name="model_id" ref="amgl.model_amgl_metal_movement"/>
+        <field name="groups" eval="[(4, ref('amgl.group_amark_authorizer'))]"/>
+        <field name="domain_force">['|',('first_approve','=',user.id),('second_approve','=',user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

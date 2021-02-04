@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Customer Daily Transaction by VAULT"
+            id="action_report_customer_daily_transaction"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.customer_daily_transaction_report"
+            file="amgl.customer_daily_transaction_report"
+            attachment_use="True"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+         />
+    </data>
+</odoo>

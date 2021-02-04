@@ -1,0 +1,53 @@
+.o_list_number {
+    #text-align: center !important;
+}
+.openerp .oe_list_content td.oe_number{
+    text-align: center !important;
+}
+.o_form_view .o_group.o_inner_group.oe_subtotal_footer .oe_subtotal_footer_separator{
+    text-align: left !important;
+}
+.o_list_view table > thead > th{
+    text-align:left !important;
+}
+.o_list_view thead {
+    #color: black !important;
+}
+.right-align{
+    text-align:right !important;
+}
+.o_form_view .o_group.o_inner_group.oe_subtotal_footer > tbody > tr > td.o_td_label{
+    text-align:left !important;
+}
+.o_form_view .o_form_field .o_list_view > thead{
+    background-color: #e2e2e0 !important;
+}
+.float-right{
+    float:right !important;
+}
+.nav-tabs > li.active{
+    background-color: #875A7B !important;
+    border-radius: 15px !important;
+}
+.nav-tabs > li.active > a{
+    color: white !important;
+}
+.nav-tabs > li{
+    background-color: #D6D6D3 !important;
+    border-radius: 15px !important;
+    margin-right: 4px !important;
+}
+.nav .nav-tabs > li > a{
+    color: black !important;
+}
+.green{
+    color: green !important;
+}
+.black{
+    color: black !important;
+}
+
+i.fa.fa-lg.fa-pencil-square.green{
+    background-color: green !important;
+    color: white !important;
+ }

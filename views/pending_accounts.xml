@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+
+        <record id="amgl.pending_accounts_form" model="ir.ui.view">
+            <field name="name">Pending Accounts Form</field>
+            <field name="model">amgl.pending.accounts</field>
+            <field name="arch" type="xml">
+                <form string="Pending Inventories" create="false" duplicate="0">
+                    <sheet>
+                        <group>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="quantity_expected"/>
+                            <field name="quantity_received"/>
+                            <field name="possible_reason"/>
+                            <field name="possible_solution"/>
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="amgl.pending_accounts_tree" model="ir.ui.view">
+            <field name="name">Pending Account</field>
+            <field name="model">amgl.pending.accounts</field>
+            <field name="arch" type="xml">
+                <tree duplicate="0" string="Pending Accounts" create="false" colors="red:possible_reason=='Too much product';cadetblue:possible_reason=='Not enough product';green:possible_reason=='Incorrect product'">
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="date_received"/>
+                    <field name="quantity_expected"/>
+                    <field name="quantity_received"/>
+                    <field name="remaining_products"/>
+                    <field name="possible_reason"/>
+                    <field name="possible_solution"/>
+                    <field name="notes"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

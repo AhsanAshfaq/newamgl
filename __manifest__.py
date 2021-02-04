@@ -1,0 +1,170 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "AMGL",
+
+    'summary': """
+            Short (1 phrase/line) summary of the module's purpose, used as
+        subtitle on modules listing or apps.openerp.com""",
+
+    'description': """
+        Long description of module's purpose
+    """,
+
+    'author': "Ahsan A.",
+    'website': "http://www.amark.com",
+
+    # Categories can be used to filter modules in modules listing
+    # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
+    # for the full list
+    'category': 'Accounting',
+    'version': '0.1.1',
+
+    # any module necessary for this one to work correctly
+    'depends': ['base', 'mail','base_action_rule','web'],
+    'html': [
+        'static/html/approval_accpeted.html',
+        'static/html/rejection_accpeted.html',
+        'static/html/deposit_email_sent.html'
+    ],
+
+    # always loaded
+    'data': [
+        'security/amgl_security.xml',
+        'security/ir.model.access.csv',
+        'security/amgl_rules.xml',
+        'views/order_line.xml',
+        'views/views.xml',
+        'views/customer.xml',
+        #'views/dashboard.xml',
+        'views/custodian.xml',
+        'views/products.xml',
+        'views/metal_movement.xml',
+        'views/possible_solutions.xml',
+        'views/possible_reasons.xml',
+        'views/pending_accounts.xml',
+        #'views/new_accounts.xml',
+        #'views/dealer.xml',
+        'views/email_scheduler.xml',
+        'views/order_customer_import.xml',
+        'views/fees.xml',
+        'views/reports.xml',
+        'views/closing_rates.xml',
+        'views/email_groups.xml',
+        'views/product_brands.xml',
+        'views/review_complete_withdraw_users.xml',
+        'data/scheduler_data.xml',
+        'data/config.xml',
+        'emailTemplates/goldstar_daily_reports_email.xml',
+        'emailTemplates/mmr_create_mail.xml',
+        'emailTemplates/mmr_package_number_reminder.xml',
+        'emailTemplates/reject_mmr_email.xml',
+        'emailTemplates/mmr_approval_complete.xml',
+        'emailTemplates/mmr_approve_reject_button.xml',
+        'emailTemplates/mmr_record_delete.xml',
+        'emailTemplates/revised_mmr_email.xml',
+        'emailTemplates/mmr_total_complete.xml',
+        'emailTemplates/new_customer_added.xml',
+        'emailTemplates/new_inventory_added.xml',
+        'emailTemplates/new_inventory_added_vault_user.xml',
+        'emailTemplates/deposit_batch_email.xml',
+        'report/detailed_transaction_report_action.xml',
+        'report/detailed_transaction_report_template.xml',
+        'report/Equity/daily_detailed_transaction_report_action.xml',
+        'report/Equity/daily_detailed_transaction_report_template.xml',
+        'report/CustodianInventoryByProduct/custodian_inventory_by_product_action.xml',
+        'report/CustodianInventoryByProduct/custodian_inventory_by_product_template.xml',
+        'report/CustodianInventoryByCustomer/custodian_inventory_by_cusomter_action.xml',
+        'report/CustodianInventoryByCustomer/custodian_inventory_by_cusomter_template.xml',
+        'report/PhysicalInvetory/physical_inventory_report_action.xml',
+        'report/PhysicalInvetory/physical_inventory_report_template.xml',
+        'report/metal_movement_report_action_complete.xml',
+        'report/metal_movement_report_template_complete.xml',
+        'report/metal_movement_report_template.xml',
+        'report/metal_movement_report_action.xml',
+        'report/customer_full_activity_report_template.xml',
+        'report/customer_full_activity_report_action.xml',
+        'report/customer_daily_transaction_report_action.xml',
+        'report/customer_daily_transaction_report_template.xml',
+        'report/GoldStar/CustomerFairHoldingsReport/customer_fair_holdings_report_action.xml',
+        'report/GoldStar/CustomerFairHoldingsReport/customer_fair_holdings_report_template.xml',
+        'report/GoldStar/CombinedHoldingByCustomer/combined_holding_by_customer_report_action.xml',
+        'report/GoldStar/CombinedHoldingByCustomer/combined_holding_by_customer_report_template.xml',
+        'report/GoldStar/CombinedHoldingStatement/combined_holding_statement_report_action.xml',
+        'report/GoldStar/CombinedHoldingStatement/combined_holding_statement_report_template.xml',
+        'report/GoldStar/ExistingAccount/Commingled/existing_accounts_billing_report_action.xml',
+        'report/GoldStar/ExistingAccount/Segregated/existing_accounts_billing_report_segregated_action.xml',
+        'report/GoldStar/ExistingAccount/Segregated/existing_accounts_billing_segregated_template.xml',
+        'report/GoldStar/ExistingAccount/Commingled/existing_accounts_billing_template.xml',
+        'report/GoldStar/NewAccount/Commingled/new_accounts_billing_report_action.xml',
+        'report/GoldStar/NewAccount/Segregated/new_accounts_billing_report_segregated_action.xml',
+        'report/GoldStar/NewAccount/Segregated/new_accounts_billing_segregated_template.xml',
+        'report/GoldStar/NewAccount/Commingled/new_accounts_billing_template.xml',
+        'report/GoldStar/CustomerPositionListing/customer_position_listing_report_action.xml',
+        'report/GoldStar/CustomerPositionListing/customer_position_listing_template.xml',
+        'report/GoldStar/CustomerHistoryByProduct/customer_history_by_product_report_template.xml',
+        'report/GoldStar/CustomerHistoryByProduct/customer_history_by_product_report_action.xml',
+        'report/NewDirectionIRA/ExistingAccount/Commingled/new_direction_existing_accounts_billing_report_action.xml',
+        'report/NewDirectionIRA/ExistingAccount/Segregated/new_direction_existing_accounts_billing_report_action_segregated.xml',
+        'report/NewDirectionIRA/ExistingAccount/Commingled/new_direction_existing_accounts_billing_template.xml',
+        'report/NewDirectionIRA/ExistingAccount/Segregated/new_direction_existing_accounts_billing_template_segregated.xml',
+        'report/NewDirectionIRA/NewAccount/Commingled/new_direction_new_accounts_billing_report_action.xml',
+        'report/NewDirectionIRA/NewAccount/Segregated/new_direction_new_accounts_billing_report_action_segregated.xml',
+        'report/NewDirectionIRA/NewAccount/Commingled/new_direction_new_accounts_billing_template.xml',
+        'report/NewDirectionIRA/NewAccount/Segregated/new_direction_new_accounts_billing_template_segregated.xml',
+
+        'report/Equity/ExistingAccount/Commingled/equity_existing_accounts_billing_report_action.xml',
+        'report/Equity/ExistingAccount/Segregated/equity_existing_accounts_billing_report_action_segregated.xml',
+        'report/Equity/ExistingAccount/Commingled/equity_existing_accounts_billing_template.xml',
+        'report/Equity/ExistingAccount/Segregated/equity_existing_accounts_billing_template_segregated.xml',
+        'report/Equity/NewAccount/Commingled/equity_new_accounts_billing_report_action.xml',
+        'report/Equity/NewAccount/Segregated/equity_new_accounts_billing_report_action_segregated.xml',
+        'report/Equity/NewAccount/Commingled/equity_new_accounts_billing_template.xml',
+        'report/Equity/NewAccount/Segregated/equity_new_accounts_billing_template_segregated.xml',
+
+        'report/ProvidentTrustGroup/ExistingAccount/Commingled/provident_trust_existing_accounts_billing_report_action.xml',
+        'report/ProvidentTrustGroup/ExistingAccount/Segregated/provident_trust_existing_accounts_billing_report_action_segregated.xml',
+        'report/ProvidentTrustGroup/ExistingAccount/Commingled/provident_trust_existing_accounts_billing_template.xml',
+        'report/ProvidentTrustGroup/ExistingAccount/Segregated/provident_trust_existing_accounts_billing_template_segregated.xml',
+        'report/ProvidentTrustGroup/NewAccount/Commingled/provident_trust_new_accounts_billing_report_action.xml',
+        'report/ProvidentTrustGroup/NewAccount/Segregated/provident_trust_new_accounts_billing_report_action_segregated.xml',
+        'report/ProvidentTrustGroup/NewAccount/Commingled/provident_trust_new_accounts_billing_template.xml',
+        'report/ProvidentTrustGroup/NewAccount/Segregated/provident_trust_new_accounts_billing_template_segregated.xml',
+        'report/ProvidentTrustGroup/CombinedHoldingByCustomer/combined_holding_by_customer_report_action.xml',
+        'report/ProvidentTrustGroup/CombinedHoldingByCustomer/combined_holding_by_customer_report_template.xml',
+        'report/ProvidentTrustGroup/CombinedHoldingStatement/combined_holding_statement_report_action.xml',
+        'report/ProvidentTrustGroup/CombinedHoldingStatement/combined_holding_statement_report_template.xml',
+        'report/ProvidentTrustGroup/CustomerPositionListing/customer_position_listing_report_action.xml',
+        'report/ProvidentTrustGroup/CustomerPositionListing/customer_position_listing_template.xml',
+        'report/ProvidentTrustGroup/CustomerHistoryByProduct/customer_history_by_product_report_template.xml',
+        'report/ProvidentTrustGroup/CustomerHistoryByProduct/customer_history_by_product_report_action.xml',
+        'report/ProvidentTrustGroup/CustomerFairHoldingsReport/customer_fair_holdings_report_action.xml',
+        'report/ProvidentTrustGroup/CustomerFairHoldingsReport/customer_fair_holdings_report_template.xml',
+
+
+        'report/customer_current_inventory_report_action.xml',
+        'report/customer_current_inventory_report_template.xml',
+        'report/customer_metal_activity_report_action.xml',
+        'report/customer_metal_activity_report_template.xml',
+        'report/customer_orderlines_batch_report_template.xml',
+        'report/customer_orderlines_batch_report_action.xml',
+        'report/backend_metal_movement_report_template.xml',
+        'report/backend_metal_movement_report_action.xml',
+        'report/transaction_invoice_report_action.xml',
+        'report/transaction_invoice_report_template.xml',
+        'views/res_user.xml',
+        'static/src/xml/extension_templates.xml',
+        "static/src/xml/inherit_login_layout.xml"
+    ],
+    'qweb': [
+        "views/colspan.xml",
+        "views/customize_create_button.xml",
+        "static/src/xml/mask.xml",
+        "static/src/xml/inherit_base.xml"
+
+    ],
+    # only loaded in demonstration mode
+    'demo': [
+        'demo/demo.xml',
+        'demo/customer_view.xml'
+    ]
+}

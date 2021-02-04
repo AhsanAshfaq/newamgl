@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+
+        <record id="amgl.dealer_form" model="ir.ui.view">
+            <field name="name">AMARK Customized Reports</field>
+            <field name="model">amgl.reports</field>
+            <field name="arch" type="xml">
+                <form string="Reports" duplicate="0" create="false" edit="false">
+                    <sheet>
+                        <field name="show_month" invisible="1"/>
+                        <field name="show_year" invisible="1"/>
+                        <field name="is_custodian_selected" invisible="1"/>
+                        <field name="show_download_report_button" invisible="1"/>
+                        <field name="show_download_transaction_invoice" invisible="1"/>
+                        <field name="show_customers" invisible="1"/>
+                        <field name="show_report_format" invisible="1"/>
+                        <field name="show_bill_customers" invisible="1"/>
+                        <group>
+                            <field name="custodian" string="Custodian" options="{'no_create': True,'no_open': True}"/>
+                            <field name="report_types" string="Report Type" attrs="{'invisible':[('is_custodian_selected', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="month" attrs="{'invisible':['|',('show_month', '=', True),('is_custodian_selected', '=', False)]}"/>
+                                <field name="year" attrs="{'invisible':['|',('show_year', '=', True),('is_custodian_selected', '=', False)]}"/>
+                            </group>
+                            <group>
+                                <field name="report_format" attrs="{'invisible':['|',('show_report_format', '=', True),('is_custodian_selected', '=', False)]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="customers" options="{'no_create': True}" attrs="{'invisible':['|',('show_customers', '=', True),('is_custodian_selected', '=', False)]}"/>
+                            </group>
+                        </group>
+                        <field name="report_validation_message" style="color:red;font-size:16px;font-weight:bold;border-bottom: 0px !important;text-align: center;" readonly="True" attrs="{'invisible': [('report_validation_message', '=', '')]}" />
+                        <group>
+                            <group>
+                                <field name="bill_customers" string="Do you want to bill customers in this report?" attrs="{'invisible':[('show_bill_customers','=',True)]}"/>
+                            </group>
+                        </group>
+
+                        <button name="fetch_reports" type="object" attrs="{'invisible':['|',('show_download_report_button', '=', True),('is_custodian_selected', '=', False)]}" class="btn btn-primary btn-sm o_list_button_add"
+                                string="Download Report"/>
+                        <button name="fetch_transaction_invoice" attrs="{'invisible':['|',('show_download_transaction_invoice', '=', True),('is_custodian_selected', '=', False)]}" type="object" class="btn btn-primary btn-sm o_list_button_add"
+                                string="Download Transaction Invoice"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

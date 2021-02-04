@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="ir_cron_scheduler_export_action" model="ir.cron">
+            <field name="name">Export email scheduler</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.email.scheduler'" name="model"/>
+            <field eval="'process_email_scheduler_queue'" name="function"/>
+        </record>
+        <record id="ir_cron_goldstar_daily_report_action" model="ir.cron">
+            <field name="name">GoldStar Daily Reports</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.reports'" name="model"/>
+            <field eval="'process_goldstar_daily_reports'" name="function"/>
+        </record>
+        <record id="ir_cron_equity_daily_report_action" model="ir.cron">
+            <field name="name">Equity Daily Reports</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.reports'" name="model"/>
+            <field eval="'upload_equity_daily_transaction_report'" name="function"/>
+        </record>
+         <record id="ir_cron_equity_daily_report_email" model="ir.cron">
+            <field name="name">Equity Daily Reports Email</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.reports'" name="model"/>
+            <field eval="'send_email_equity_daily_detail_transaction_report'" name="function"/>
+        </record>
+        <record id="ir_cron_provident_daily_report_action" model="ir.cron">
+            <field name="name">Provident Trust Group Daily Reports</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">20</field>
+            <field name="interval_type">minutes</field>
+            <!--<field name="nextcall" eval="(datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d 04:00:00')" />-->
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.reports'" name="model"/>
+            <field eval="'process_provident_group_daily_reports'" name="function"/>
+        </record>
+         <record id="ir_cron_goldstar_gtc_report_action" model="ir.cron">
+            <field name="name">GTC Tran. History GoldStar</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">20</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.reports'" name="model"/>
+            <field eval="'upload_transaction_history_report'" name="function"/>
+        </record>
+        <record id="ir_cron_provident_gtc_report_action" model="ir.cron">
+            <field name="name">GTC Tran. History Provident</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">20</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.reports'" name="model"/>
+            <field eval="'upload_transaction_history_report_provident'" name="function"/>
+        </record>
+        <record id="ir_cron_delete_extra_notes_action" model="ir.cron">
+            <field name="name">Delete notes scheduler</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.order_line_notes'" name="model"/>
+            <field eval="'process_extra_notes'" name="function"/>
+        </record>
+        <record id="ir_cron_scheduler_package_number_reminder" model="ir.cron">
+            <field name="name">Send Withdrawal Package Reminder</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall"/>
+            <field eval="'amgl.email.scheduler'" name="model"/>
+            <field eval="'send_mmr_reminder_email'" name="function"/>
+        </record>
+        <record id="user_server_action" model="ir.actions.server">
+            <field name="name">User Default Action Update - Server Action</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">action = env['amgl.customer'].automated_action_method()</field>
+        </record>
+        <record id="automated_action_for_user" model="base.action.rule">
+            <field name="name">User Default Action Update - Automated Action</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="active">1</field>
+            <field name="kind">on_create_or_write</field>
+            <field name="server_action_ids" eval="[(6, 0, [ref('amgl.user_server_action')])]"/>
+        </record>
+   </data>
+</openerp>

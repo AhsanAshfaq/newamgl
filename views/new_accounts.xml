@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <record id="amgl_new_account_tree" model="ir.ui.view">
+            <field name="name">New Accounts</field>
+            <field name="model">amgl.new_accounts</field>
+            <field name="arch" type="xml">
+                <tree duplicate="0" create="false" edit="false" delete='false'>
+                    <field name="customer_id" invisible="1"/>
+                    <field name="custodian"/>
+                    <field name="customer_name"/>
+                    <field name="account_number"/>
+                    <field name="account_type"/>
+					<field name="date_opened"/>
+                    <button name="add_deposit" context="{'customer_id': customer_id}" type="object"
+                            style="background-color: #4CAF50;border: none;color: white;padding: 6px 15px;text-align: center;display: inline-block;font-size: 16px;margin-top: -10px;"
+                            string="Add Deposit" custom="click" class="oe_highlight custom_button"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

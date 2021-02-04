@@ -1,0 +1,79 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+
+ir_model_access_401,Products,amgl.model_amgl_products,amgl.group_amark_admins,1,1,1,1
+ir_model_access_402,Possible Solutions,amgl.model_amgl_possible_solution,amgl.group_amark_admins,1,1,1,1
+ir_model_access_403,Possible Reasons,amgl.model_amgl_possible_reason,amgl.group_amark_admins,1,1,1,1
+ir_model_access_404,Pending Account,amgl.model_amgl_pending_accounts,amgl.group_amark_admins,1,1,1,1
+ir_model_access_405,Order History,amgl.model_amgl_order_history,amgl.group_amark_admins,1,1,1,1
+ir_model_access_406,Order Line,amgl.model_amgl_order_line,amgl.group_amark_admins,1,1,1,1
+ir_model_access_407,Withdrawal,amgl.model_amgl_metal_movement,amgl.group_amark_admins,1,1,1,1
+ir_model_access_410,Custodian,amgl.model_amgl_custodian,amgl.group_amark_admins,1,1,1,1
+ir_model_access_411,Customer,amgl.model_amgl_customer,amgl.group_amark_admins,1,1,1,1
+ir_model_access_413,Fees,amgl.model_amgl_fees,amgl.group_amark_admins,1,1,1,1
+ir_model_access_414,Reports,amgl.model_amgl_reports,amgl.group_amark_admins,1,1,1,1
+ir_model_access_415,Order Line Notes,amgl.model_amgl_order_line_notes,amgl.group_amark_admins,1,1,1,1
+ir_model_access_416,Closing Rates,amgl.model_amgl_closing_rates,amgl.group_amark_admins,1,1,1,1
+ir_model_access_417,Email Group,amgl.model_amgl_email_group,amgl.group_amark_admins,1,1,1,1
+ir_model_access_418,Product Brands,amgl.model_amgl_product_brands,amgl.group_amark_admins,1,1,1,1
+ir_model_access_419,Review Complete Users,amgl.model_amgl_review_users,amgl.group_amark_admins,1,1,1,1
+ir_model_access_420,Users,amgl.model_res_users,amgl.group_amark_admins,1,1,1,1
+
+
+ir_model_access_501,Fees,amgl.model_amgl_fees,amgl.group_amark_sub_admins,1,1,1,1
+ir_model_access_502,Custodian,amgl.model_amgl_custodian,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_503,Customer,amgl.model_amgl_customer,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_504,Pending Inventories,amgl.model_amgl_pending_accounts,amgl.group_amark_sub_admins,1,1,0,0
+ir_model_access_505,Withdrawal,amgl.model_amgl_metal_movement,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_506,Products,amgl.model_amgl_products,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_507,Order History,amgl.model_amgl_order_history,amgl.group_amark_sub_admins,1,1,1,1
+ir_model_access_508,Order Lines,amgl.model_amgl_order_line,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_510,Possible Solution,amgl.model_amgl_possible_solution,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_511,Possible Reason,amgl.model_amgl_possible_reason,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_513,Users,amgl.model_res_users,amgl.group_amark_sub_admins,1,1,1,1
+ir_model_access_514,Reports,amgl.model_amgl_reports,amgl.group_amark_sub_admins,1,1,1,1
+ir_model_access_515,Order Line Notes,amgl.model_amgl_order_line_notes,amgl.group_amark_sub_admins,1,1,1,1
+ir_model_access_516,Closing Rates,amgl.model_amgl_closing_rates,amgl.group_amark_sub_admins,1,1,1,1
+ir_model_access_517,Email Group,amgl.model_amgl_email_group,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_518,Product Brands,amgl.model_amgl_product_brands,amgl.group_amark_sub_admins,1,1,1,0
+ir_model_access_519,Review Complete Users,amgl.model_amgl_review_users,amgl.group_amark_sub_admins,1,1,1,1
+
+
+ir_model_access_601,Users,amgl.model_res_users,amgl.group_amark_custodian,1,1,1,1
+ir_model_access_603,Possible Solution,amgl.model_amgl_possible_solution,amgl.group_amark_custodian,1,1,0,0
+ir_model_access_604,Possible Reason,amgl.model_amgl_possible_reason,amgl.group_amark_custodian,1,1,0,0
+ir_model_access_605,Order History,amgl.model_amgl_order_history,amgl.group_amark_custodian,1,1,1,1
+ir_model_access_606,Products,amgl.model_amgl_products,amgl.group_amark_custodian,1,1,0,0
+ir_model_access_607,Order Line,amgl.model_amgl_order_line,amgl.group_amark_custodian,1,0,1,0
+ir_model_access_608,Custodian,amgl.model_amgl_custodian,amgl.group_amark_custodian,1,1,1,0
+ir_model_access_610,Customer,amgl.model_amgl_customer,amgl.group_amark_custodian,1,1,1,0
+ir_model_access_611,Withdrawal,amgl.model_amgl_metal_movement,amgl.group_amark_custodian,1,1,0,0
+ir_model_access_612,Order Line Notes,amgl.model_amgl_order_line_notes,amgl.group_amark_custodian,1,1,1,1
+ir_model_access_613,Email Group,amgl.model_amgl_email_group,amgl.group_amark_custodian,1,0,0,0
+ir_model_access_614,Product Brands,amgl.model_amgl_product_brands,amgl.group_amark_custodian,1,0,0,0
+
+
+ir_model_access_701,Order History,amgl.model_amgl_order_history,amgl.group_amark_vault,1,1,1,1
+ir_model_access_702,Product,amgl.model_amgl_products,amgl.group_amark_vault,1,0,0,0
+ir_model_access_703,Email Group,amgl.model_amgl_email_group,amgl.group_amark_vault,1,0,0,0
+ir_model_access_704,Order Lines,amgl.model_amgl_order_line,amgl.group_amark_vault,1,1,1,0
+ir_model_access_706,Customer,amgl.model_amgl_customer,amgl.group_amark_vault,1,1,0,0
+ir_model_access_707,Custodian,amgl.model_amgl_custodian,amgl.group_amark_vault,1,0,0,0
+ir_model_access_708,Withdrawal,amgl.model_amgl_metal_movement,amgl.group_amark_vault,1,1,0,0
+ir_model_access_710,Fees,amgl.model_amgl_fees,amgl.group_amark_vault,1,1,1,1
+ir_model_access_711,Users,amgl.model_res_users,amgl.group_amark_vault,1,1,1,1
+ir_model_access_712,Order Line Notes,amgl.model_amgl_order_line_notes,amgl.group_amark_vault,1,1,1,1
+ir_model_access_713,Review Complete Users,amgl.model_amgl_review_users,amgl.group_amark_vault,1,1,1,1
+
+
+
+
+ir_model_access_801,Users,amgl.model_res_users,amgl.group_amark_authorizer,1,1,1,1
+ir_model_access_802,Withdrawal,amgl.model_amgl_metal_movement,amgl.group_amark_authorizer,1,1,0,0
+ir_model_access_803,Fees,amgl.model_amgl_fees,amgl.group_amark_authorizer,1,1,0,0
+ir_model_access_804,Order Lines,amgl.model_amgl_order_line,amgl.group_amark_authorizer,1,1,0,0
+ir_model_access_805,Customer,amgl.model_amgl_customer,amgl.group_amark_authorizer,1,1,0,0
+ir_model_access_806,Products,amgl.model_amgl_products,amgl.group_amark_authorizer,1,1,1,0
+ir_model_access_807,Custodian,amgl.model_amgl_custodian,amgl.group_amark_authorizer,1,1,0,0
+ir_model_access_808,Email Group,amgl.model_amgl_email_group,amgl.group_amark_authorizer,1,0,0,0
+ir_model_access_809,Product Brands,amgl.model_amgl_product_brands,amgl.group_amark_authorizer,1,0,0,0

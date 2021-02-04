@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_company_form_inherited">
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form" />
+            <field name="arch" type="xml">
+                <label for="name" position="attributes">
+                    <attribute name="string">Custodian Name</attribute>
+                    <attribute name="for" />
+                </label>
+                <field name="rml_header1" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </field>
+                <label for="rml_header1" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </label>
+                <field name="currency_id" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </field>
+                <field name="company_registry" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </field>
+                <field name="vat" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </field>
+            </field>
+
+        </record>
+        <record model="ir.ui.view" id="view_company_tree_inherited">
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_tree" />
+            <field name="arch" type="xml">
+                <field name="name" position="attributes">
+                    <attribute name="string">Custodian Name</attribute>
+                </field>
+                <field name="partner_id" position="attributes">
+                     <attribute name='invisible'>1</attribute>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.menu" id="base.menu_action_res_company_form">
+            <field name="name">Custodians</field>
+        </record>
+        <record model="ir.actions.act_window" id="base.action_res_company_form">
+            <field name="name">Custodians</field>
+        </record>
+    </data>
+</odoo>

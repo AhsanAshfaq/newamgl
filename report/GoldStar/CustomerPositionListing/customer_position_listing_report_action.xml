@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Customer Position Listing"
+            id="action_report_customer_position_listing"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.customer_position_listing_report_template"
+            file="amgl.customer_position_listing_report_template"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+            menu="False"
+         />
+    </data>
+</odoo>

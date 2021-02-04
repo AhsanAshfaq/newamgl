@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Customer Transactions History"
+            id="action_customer_full_activity_report"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.customer_full_activity_report"
+            file="amgl.customer_full_activity_report"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+            attachment_use="True"
+         />
+    </data>
+</odoo>

@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="mmr_approval_total_complete" model="mail.template">
+            <field name="name">Withdrawal Request Complete</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="email_from">irastorage@amark.com</field>
+            <field name="email_to">${user.env.context.get('email_to')}</field>
+            <field name="email_cc">${user.env.context.get('email_cc')}</field>
+            <field name="subject">${user.env.context.get('email_subject')}</field>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucida Sans Unicode','Lucida Grande','Tahoma',Verdana,sans-serif;font-size: 15px;float:left !important;width: 150px;background: #FFFFFF repeat top /100%; color: #777777;">
+                     <img style="float:left; height: auto;" width="150" src="https://image.ibb.co/nsSc9c/amgl_logo_web_600px.png" alt="${user.company_id.name}" />
+                </div>
+                <div style="font-family: 'Lucida Sans Unicode','Lucida Grande','Tahoma',Verdana,sans-serif;font-size: 15px;padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
+                    <br />
+                    Hello ${user.env.context.get('custodian_name')},
+                    <br />
+                    <p>Withdrawal request <strong>${user.env.context.get('mmr_number')}</strong> is complete and attached is withdrawal paperwork noting tracking information. </p>
+                    <p>Please contact irastorage@amark.com if you have any questions.</p>
+                    <p>Thank you,</p>
+                    <p>AMGL IRA Storage Team</p>
+                </div>
+            ]]></field>
+            <field name="user_signature" eval="False"/>
+        </record>
+    </data>
+</odoo>

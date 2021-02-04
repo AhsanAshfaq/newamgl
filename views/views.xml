@@ -1,0 +1,332 @@
+<odoo>
+    <data>
+        <record id="amgl.action_window" model="ir.actions.act_window">
+            <field name="name">Account Management</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.customer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_is_account_closed":1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create new customers
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="amgl.products_action_window">
+            <field name="name">Create New Product</field>
+            <field name="res_model">amgl.products</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="amgl.order_line_action_window" model="ir.actions.act_window">
+            <field name="name">Deposit Per Batch</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.order_line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_batch_number': 1}</field>
+            <field name="domain">[('metal_movement_id', '=', False),('new_inventory_email_sent', '!=',
+                True),('batch_number', '!=', False),('batch_email_sent', '!=', True),('is_master_records', '=',
+                False),('is_active', '=', True)]
+            </field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <!--<record id="amgl.new_account_action_window" model="ir.actions.act_window">-->
+        <!--<field name="name">New Accounts</field>-->
+        <!--<field name="type">ir.actions.act_window</field>-->
+        <!--<field name="res_model">amgl.new_accounts</field>-->
+        <!--<field name="view_mode">tree</field>-->
+        <!--<field name="help" type="html">-->
+        <!--<p class="oe_view_nocontent_create">-->
+        <!--&lt;!&ndash; Add Text Here &ndash;&gt;-->
+        <!--</p><p>-->
+        <!--&lt;!&ndash; More details about what a user can do with this object will be OK &ndash;&gt;-->
+        <!--</p>-->
+        <!--</field>-->
+        <!--</record>-->
+
+        <record id="amgl.pending_accounts_action_window" model="ir.actions.act_window">
+            <field name="name">Pending Accounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.pending.accounts</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <record id="amgl.metal_movement_action_window" model="ir.actions.act_window">
+            <field name="name">Withdrawal Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.metal_movement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','!=','cancel')]</field>
+            <!--<field name="context">{"search_default_not_completed":1}</field>-->
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <record id="amgl.possible_reasons_action_window" model="ir.actions.act_window">
+            <field name="name">Possible Reasons Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.possible_reason</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <record id="amgl.possible_solution_action_window" model="ir.actions.act_window">
+            <field name="name">Possible Solution</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.possible_solution</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <!--<record id="amgl.dealer_action_window" model="ir.actions.act_window">-->
+        <!--<field name="name">Dealer</field>-->
+        <!--<field name="type">ir.actions.act_window</field>-->
+        <!--<field name="res_model">amgl.dealer</field>-->
+        <!--<field name="view_mode">tree,form</field>-->
+        <!--<field name="help" type="html">-->
+        <!--<p class="oe_view_nocontent_create">-->
+        <!--Click here to create new dealer-->
+        <!--</p><p>-->
+        <!--&lt;!&ndash; More details about what a user can do with this object will be OK &ndash;&gt;-->
+        <!--</p>-->
+        <!--</field>-->
+        <!--</record>-->
+
+        <!--<record id="amgl.dashboard_action_window" model="ir.actions.act_window">-->
+        <!--<field name="name">Home</field>-->
+        <!--<field name="type">ir.actions.act_window</field>-->
+        <!--<field name="res_model">amgl.dashboard</field>-->
+        <!--<field name="view_mode">tree</field>-->
+        <!--<field name="limit">15</field>-->
+        <!--<field name="help" type="html">-->
+        <!--<p class="oe_view_nocontent_create">-->
+        <!--&lt;!&ndash; Add Text Here &ndash;&gt;-->
+        <!--</p><p>-->
+        <!--&lt;!&ndash; More details about what a user can do with this object will be OK &ndash;&gt;-->
+        <!--</p>-->
+        <!--</field>-->
+        <!--</record>-->
+
+        <!--<record id="amgl.menu_dashboard_metal_activity" model="ir.actions.act_window">-->
+        <!--<field name="name">Metal Activity</field>-->
+        <!--<field name="type">ir.actions.act_window</field>-->
+        <!--<field name="res_model">amgl.dashboard</field>-->
+        <!--<field name="view_mode">tree</field>-->
+        <!--<field name="limit">150</field>-->
+        <!--<field name="help" type="html">-->
+        <!--<p class="oe_view_nocontent_create">-->
+        <!--&lt;!&ndash; Add Text Here &ndash;&gt;-->
+        <!--</p><p>-->
+        <!--&lt;!&ndash; More details about what a user can do with this object will be OK &ndash;&gt;-->
+        <!--</p>-->
+        <!--</field>-->
+        <!--</record>-->
+
+        <record id="amgl.menu_custodian_action_window" model="ir.actions.act_window">
+            <field name="name">Custodians</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.custodian</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create custodians
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <record id="amgl.menu_email_scheduler_action_window" model="ir.actions.act_window">
+            <field name="name">Export Email Scheduler</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.email.scheduler</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="amgl.menu_order_customer_import_action_window" model="ir.actions.act_window">
+            <field name="name">Import Custodian Data</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.order_customer_import</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="amgl.menu_reports_action_window" model="ir.actions.act_window">
+            <field name="name">Reports</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.reports</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <record id="amgl.menu_closing_rates_action_window" model="ir.actions.act_window">
+            <field name="name">Closing Rates</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.closing.rates</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!--<record id="amgl.menu_email_type_group_association_action_window" model="ir.actions.act_window">-->
+            <!--<field name="name">Email Type Group Association</field>-->
+            <!--<field name="type">ir.actions.act_window</field>-->
+            <!--<field name="res_model">amgl.email.type.group.association</field>-->
+            <!--<field name="view_mode">tree,form</field>-->
+        <!--</record>-->
+
+        <record id="amgl.menu_email_group_action_window" model="ir.actions.act_window">
+            <field name="name">Email Group</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.email.group</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="amgl.menu_product_brands_action_window" model="ir.actions.act_window">
+            <field name="name">Product Brands</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.product.brands</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="amgl.menu_review_complete_withdraw_users_form_action_window" model="ir.actions.act_window">
+            <field name="name">Vault Authorizers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.review_users</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+        <!-- Top menu item -->
+
+        <menuitem name="AMGL" id="amgl.menu_root"/>
+
+
+        <!--Account management Menues-->
+
+        <menuitem name="Account Management" sequence="1" parent="amgl.menu_root" id="amgl.menu_customer"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_custodian,amgl.group_amark_vault"/>
+
+        <menuitem name="Customers" sequence="1" parent="amgl.menu_customer" id="amgl.submenu_customer"
+                  action="amgl.action_window"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_custodian,amgl.group_amark_vault"/>
+
+        <menuitem name="Custodians" sequence="2" id="amgl.menu_custodians" parent="amgl.menu_customer"
+                  action="amgl.menu_custodian_action_window"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>
+
+        <menuitem name="Email Group" sequence="2" id="amgl.menu_email_group" parent="amgl.menu_customer"
+                  action="amgl.menu_email_group_action_window"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>
+
+        <!--<menuitem name="Email Type Group Association" sequence="2" id="amgl.menu_email_type_group_association" parent="amgl.menu_customer"-->
+                  <!--action="amgl.menu_email_type_group_association_action_window"-->
+                  <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>-->
+
+
+        <!--Inventory Management Menus-->
+
+        <menuitem sequence="4" name="Inventory Management" id="amgl.menu_inventory_management" parent="amgl.menu_root"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_vault,amgl.group_amark_custodian,amgl.group_amark_authorizer"/>
+
+        <!--<menuitem name="Metal Activity" sequence="1" parent="amgl.menu_inventory_management" id="amgl.menu_metal_activity"-->
+        <!--action="amgl.menu_dashboard_metal_activity"-->
+        <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_vault"/>-->
+
+        <!--<menuitem name="Pending Inventories" id="amgl.menu_pending_inventories" parent="amgl.menu_inventory_management"-->
+        <!--action="amgl.pending_accounts_action_window"-->
+        <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>-->
+
+        <menuitem name="Products" id="amgl.menu_products" parent="amgl.menu_inventory_management"
+                  action="amgl.products_action_window"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>
+
+        <menuitem name="Vault Authorizers" id="amgl.menu_review_complete_withdraw_users_form" parent="amgl.menu_inventory_management"
+                  action="amgl.menu_review_complete_withdraw_users_form_action_window"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>
+
+
+        <menuitem name="Closing Rates" sequence="3" id="amgl.menu_closing_rates" parent="amgl.menu_inventory_management"
+                  action="amgl.menu_closing_rates_action_window"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>
+
+
+
+        <!--<menuitem name="Possible Reasons" id="amgl.menu_possible_reasons" parent="amgl.menu_inventory_management"-->
+        <!--action="amgl.possible_reasons_action_window"-->
+        <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>-->
+
+        <!--<menuitem name="Dealers" id="amgl.menu_dealer" parent="amgl.menu_inventory_management"-->
+        <!--action="amgl.dealer_action_window"-->
+        <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>-->
+
+        <!--<menuitem name="Possible Solutions" id="amgl.menu_possible_solutions" parent="amgl.menu_inventory_management"-->
+        <!--action="amgl.possible_solution_action_window"-->
+        <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>-->
+
+        <menuitem name="Withdrawal" id="amgl.menu_metal_movement" parent="amgl.menu_inventory_management"
+                  action="amgl.metal_movement_action_window"
+                  groups="amgl.group_amark_authorizer,amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_vault"/>
+
+        <menuitem name="Deposit Batch" id="amgl.menu_deposit_batch" parent="amgl.menu_inventory_management"
+                  action="amgl.order_line_action_window" groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>
+
+        <!--<menuitem name="New Accounts" id="amgl.menu_new_accounts" parent="amgl.menu_inventory_management"-->
+        <!--action="amgl.new_account_action_window"/>-->
+
+        <!-- Email Scheduler-->
+        <!--<menuitem name="Scheduler Executions" sequence="20" parent="amgl.menu_root" id="amgl.menu_email_scheduler"-->
+        <!--action="menu_email_scheduler_action_window"-->
+        <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>-->
+
+        <!--<menuitem name="Data Import" sequence="20" parent="amgl.menu_root" id="amgl.menu_order_customer_import"-->
+        <!--action="menu_order_customer_import_action_window"-->
+        <!--groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"/>-->
+
+        <!-- Reports Menu -->
+        <menuitem name="Reports" sequence="3" parent="amgl.menu_root" id="amgl.menu_report_parent"
+                  groups="amgl.group_amark_admins,amgl.group_amark_sub_admins"
+                  action="amgl.menu_reports_action_window"/>
+
+
+    </data>
+</odoo>

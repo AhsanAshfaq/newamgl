@@ -1,0 +1,202 @@
+<odoo>
+    <template id="new_direction_new_accounts_billing_commingled">
+        <t t-call="report.html_container">
+            <t t-as="report.external_layout">
+                <t t-set="index_total" t-value="0"/>
+                <t t-set="total_page_numbers" t-value="docs.get_total_page_number(docs)"/>
+                <t t-set="total_fees" t-value="0"/>
+                <t t-if="len(docs) == 0">
+                    <div class="page">
+                        <h1 style="text-align:center !important;">No Data Found.</h1>
+                    </div>
+                </t>
+                <t t-if="len(docs) > 0">
+                    <t t-foreach="range(1)" t-as="page">
+                        <div class="page col-m-12"
+                             style="color:black !important;font-family:monospace !important;font-size:9px;width:100% !important;background-color: white !important;">
+                            <style>
+                                .set-color{
+                                background-color: white !important;
+                                }
+                                break-setting{
+
+                                }
+                                .justify{
+                                text-align:justify;
+                                }
+                                .right{
+                                text-align:right;
+                                }
+                                .left{
+                                text-align:left;
+                                }
+                            </style>
+                            <div class="oe_structure" style="background-color: white !important;"/>
+                            <div class="set-color break-setting">
+                                <t t-call="amgl.new_direction_new_accounts_billing_commingled_header"></t>
+                                <table style="width:100%;font-family:monospace !important;font-size:7px !important;text-align:right;margin-top:10px;">
+                                    <thead>
+                                        <tr style="padding:8px;">
+                                            <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                                                nowrap="nowrap" class="left">
+                                                Acc#
+                                            </th>
+                                            <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                                                nowrap="nowrap" class="left">
+                                                Init Bill Date
+                                            </th>
+                                            <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                                                nowrap="nowrap" class="left">
+                                                Account Name
+                                            </th>
+                                            <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                                                nowrap="nowrap" class="right">
+                                                Total Ounces
+                                            </th>
+
+                                            <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                                                nowrap="nowrap" class="right">
+                                                Account Value
+                                            </th>
+                                            <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                                                nowrap="nowrap" class="right">
+                                                Fee
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <t t-foreach="docs" t-as="o">
+                                            <t t-set="total_fees"
+                                               t-value="total_fees + docs.get_account_fees(o, docs._context['selected_date'])"/>
+                                            <tr style="font-size:9px;border:1px solid white !important;">
+                                                <td style="text-align:left;border:1px solid white !important;">
+                                                    <t t-if="'Gold' in o.custodian_id.name">
+                                                        <span t-field="o.gst_account_number"/>
+                                                    </t>
+                                                    <t t-if="'Gold' not in o.custodian_id.name">
+                                                        <span t-field="o.account_number"/>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align:left;border:1px solid white !important;">
+                                                    <span t-esc="docs.get_init_deposit_date(o)"/>
+                                                </td>
+                                                <td nowrap="nowrap"
+                                                    style="text-align:left;border:1px solid white !important;">
+                                                    <span t-field="o.full_name"/>
+                                                </td>
+                                                <td nowrap="nowrap"
+                                                    style="border:1px solid white !important;">
+                                                    <span class="right"
+                                                          t-esc="'{0:,.2f}'.format(float(docs.get_total_weight(o, docs._context['selected_date'])))"/>
+                                                    oz
+                                                </td>
+                                                <td style="border:1px solid white !important;" class="right">
+                                                    $
+                                                    <span class="right"
+                                                          t-esc="'{0:,.2f}'.format(float(docs.get_account_value(o, docs._context['selected_date'])))"/>
+                                                </td>
+                                                <td style="border:1px solid white !important;" class="right">
+                                                    $
+                                                    <span class="right"
+                                                          t-esc="'{0:,.2f}'.format(float(docs.get_account_fees(o, docs._context['selected_date'])))"/>
+                                                </td>
+                                            </tr>
+                                            <!--</t>-->
+                                            <!--<t t-set="index_total" t-value="index_total + 1"/>-->
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--<t t-if="page + 1 == total_page_numbers">-->
+                            <div class="col-m-12"
+                                 style="color:black !important;font-family:monospace !important;font-size:9px;width:100% !important;background-color: white !important;">
+                                <div style="clear:both;"></div>
+                                <div style="margin-top:50px;">
+                                    <div style="float:left;">
+                                        <div>
+                                            <b>
+                                                <u>Total New Non-Segregated Accounts</u>
+                                            </b>
+                                            <span t-esc="len(docs)" style="margin-left:20px;"/>
+                                        </div>
+                                    </div>
+                                    <div style="float:right;">
+                                        <span style="text-align:left;">
+                                            <b style="text-align:left;">Grand Total</b>
+                                        </span>
+                                        <span style="margin-left: 20px;">
+                                            <b>$
+                                                <span t-esc="'{0:,.2f}'.format(float(total_fees))"
+                                                      style="text-align:right;"/>
+                                            </b>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--</t>-->
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="new_direction_new_accounts_billing_commingled_header">
+        <div style="clear:both;"></div>
+        <div style="width:20%;float:left;">
+            <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                 style="color:white !important;height: auto; width: 150px;"/>
+        </div>
+        <div style="clear:both;"></div>
+        <div style="margin-top:20px !important;padding-top:20px !important;font-family:monospace !important;font-size:9px;background-color:  white !important;">
+            <div style="width:100%;">
+                <div style="font-family:monospace !important;font-size:11px !important;width:50%;float:left;text-align:left !important;">
+                    Bill To :
+                    <b>New Direction Trust Company</b>
+                    <div style="margin-left:40px !important;">
+                        1070 W. Century Dr., #101
+                    </div>
+                    <div style="margin-left:40px !important;">
+                        Louisville, CO 80027
+                    </div>
+                </div>
+                <div style="font-family:monospace !important;font-size:11px !important;width:30%;float:right;text-align:left !important;">
+                    <span>Invoice:
+                        <b>Storage, New Accounts</b>
+                    </span>
+                </div>
+                <br/>
+                <div style="font-family:monospace !important;font-size:11px !important;width:30%;float:right;text-align:left !important;">
+                    Billing Month:
+                    <b>
+                        <span t-esc="docs._context['selected_date']"/>
+                    </b>
+                </div>
+                <br/>
+                <div style="font-family:monospace !important;font-size:11px !important;width:30%;float:right;text-align:left !important;">
+                    Issued Date:
+                    <b>
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                    </b>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div style="clear:both;"></div>
+            <div style="text-decoration:underline;font-weight:bold !important;width:100%;text-align:center !important;font-family:monospace !important;font-size:15px !important;">
+                Non-Segregated
+            </div>
+            <div style="clear:both;"></div>
+            <div style="margin-top:80px;"></div>
+        </div>
+    </template>
+</odoo>

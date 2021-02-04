@@ -1,0 +1,160 @@
+<odoo>
+    <template id="customer_orderlines_batch_report">
+        <div class="page" style="font-family:monospace !important;font-size:9px;">
+            <style>
+                th {
+                text-align:left;"
+                padding: 3px;
+                }
+                td {
+                padding: 3px;
+                }
+            </style>
+            <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                <div style="margin-bottom:20px !important;width:100%;height: 100px !important; text-align:center !important;">
+                    <div style="width:20%;float:left;">
+                        <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                             style="color:white !important;height: auto; width: 150px;"/>
+                    </div>
+                    <div style="width:20%;float:right;margin-top:11px;">
+                        <div>
+                            <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                  t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;margin-bottom:50px !important;">
+                    <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                        Certificate Of Deposit
+                    </h2>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <div style="width:60%;float:left;">
+                <table>
+                    <tr>
+                        <td style="color:black !important;font-size:10px; !important;">
+                            First Name:
+                        </td>
+                        <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                            <span t-field="docs[0].customer_id.first_name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:black !important;font-size:10px; !important;">
+                            Last Name:
+                        </td>
+                        <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                            <span t-field="docs[0].customer_id.last_name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:black !important;font-size:10px; !important;">
+                            Deposit Ref:
+                        </td>
+                        <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                            <span t-field="docs[0].batch_number"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="width:40%;float:right;">
+                <table style="color:black !important;">
+                    <tr>
+                        <td style="color:black !important;font-size:11px; !important;">
+                            Account Number:
+                        </td>
+                        <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                            <t t-if="'Gold' in docs[0].customer_id.custodian_id.name">
+                                <span t-field="docs[0].customer_id.gst_account_number"/>
+                            </t>
+                            <t t-if="'Gold' not in docs[0].customer_id.custodian_id.name">
+                                <span t-field="docs[0].customer_id.account_number"/>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:black !important;font-size:10px; !important;">
+                            Custodian:
+                        </td>
+                        <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                            <span t-field="docs[0].customer_id.custodian_id"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:black !important;font-size:10px; !important;">
+                            Account Type:
+                        </td>
+                        <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                            <span t-field="docs[0].customer_id.account_type"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear:both;"></div>
+            <br/>
+
+            <table style="width:100%;font-family:monospace !important;font-size:7px !important;text-align:right;margin-top:10px;">
+                <thead>
+                    <tr style="padding:8px;">
+                        <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                            nowrap="nowrap"
+                            class="left">
+                            Product
+                        </th>
+                        <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                            nowrap="nowrap"
+                            class="left">
+                            Commodity
+                        </th>
+                        <th style="text-align:right !important;border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                            nowrap="nowrap">
+                            Quantity
+                        </th>
+                        <th  style="text-align:right !important;border-bottom: 2px solid black !important;font-size:9px !important;padding-right:-5px !important;"
+                             nowrap="nowrap">
+                            Total Weight
+                        </th>
+                        <th style="border-bottom: 2px solid black !important;font-size:9px !important;padding-left:10px !important;"
+                            nowrap="nowrap"
+                            class="left">
+                            Date
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                <t t-foreach="docs" t-as="ol">
+                    <tbody>
+                        <tr style="font-size:9px;border:1px solid white !important;">
+                            <td nowrap="nowrap" style="text-align:left;border:1px solid white !important;">
+                                <span t-field="ol.products"/>
+                            </td>
+                            <td nowrap="nowrap" style="text-align:left;border:1px solid white !important;">
+                                <span t-field="ol.commodity"/>
+                            </td>
+                            <td style="text-align:right;border:1px solid white !important;">
+                                <span t-esc="'{0:,.0f}'.format(float(docs.get_product_total_quantity(ol.products, ol.customer_id, ol.batch_number)))"/>
+                            </td>
+                            <td style="text-align:right;border:1px solid white !important;">
+                                <span t-esc="'{0:,.2f}'.format(float(docs.get_product_total_weight(ol.products, ol.customer_id, ol.batch_number)))"/>
+                                oz
+                            </td>
+                            <td style="padding-left:10px !important;text-align:left;border:1px solid white !important;">
+                                <span t-field="ol.date_received"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </t>
+            </table>
+        </div>
+    </template>
+
+</odoo>

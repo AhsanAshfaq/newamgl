@@ -1,0 +1,230 @@
+<odoo>
+    <template id="physical_inventory_report_template_body">
+        <t t-set="custodians" t-value="docs.get_custodians_only()"/>
+        <t t-set="gold" t-value="0.00"/>
+        <t t-set="gold_weight" t-value="0.00"/>
+        <t t-set="silver" t-value="0.00"/>
+        <t t-set="silver_weight" t-value="0.00"/>
+        <t t-set="platinum" t-value="0.00"/>
+        <t t-set="platinum_weight" t-value="0.00"/>
+        <t t-set="palladium" t-value="0.00"/>
+        <t t-set="palladium_weight" t-value="0.00"/>
+        <t t-set="custodian_count" t-value="0"/>
+        <t t-set="gold_seg" t-value="0.00"/>
+        <t t-set="gold_weight_seg" t-value="0.00"/>
+        <t t-set="silver_seg" t-value="0.00"/>
+        <t t-set="silver_weight_seg" t-value="0.00"/>
+        <t t-set="platinum_seg" t-value="0.00"/>
+        <t t-set="platinum_weight_seg" t-value="0.00"/>
+        <t t-set="palladium_seg" t-value="0.00"/>
+        <t t-set="palladium_weight_seg" t-value="0.00"/>
+        <t t-foreach="custodians" t-as="custodian">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.custodian_id.name == custodian">
+                    <t t-if="o.account_type == 'Commingled'">
+                        <t t-foreach="o.customer_order_lines" t-as="ol">
+                            <t t-set="render" t-value="False"/>
+                            <t t-if="not ol.metal_movement_id">
+                                <t t-set="render" t-value="True"/>
+                            </t>
+                            <t t-if="ol.metal_movement_id">
+                                <t t-if="ol.metal_movement_id.state == 'completed'">
+                                    <t t-set="render" t-value="True"/>
+                                </t>
+                            </t>
+                            <t t-if="render">
+                                <t t-if="ol.products.type == 'Gold'">
+                                    <t t-set="gold" t-value="gold + ol.temp_received_weight"/>
+                                    <t t-set="gold_weight" t-value="gold_weight + ol.temp_received_weight"/>
+                                </t>
+                                <t t-if="ol.products.type == 'Silver'">
+                                    <t t-set="silver" t-value="silver + ol.temp_received_weight"/>
+                                    <t t-set="silver_weight" t-value="silver_weight + ol.temp_received_weight"/>
+                                </t>
+                                <t t-if="ol.products.type == 'Platinum'">
+                                    <t t-set="platinum" t-value="platinum + ol.temp_received_weight"/>
+                                    <t t-set="platinum_weight" t-value="platinum_weight + ol.temp_received_weight"/>
+                                </t>
+                                <t t-if="ol.products.type == 'Palladium'">
+                                    <t t-set="palladium" t-value="palladium + ol.temp_received_weight"/>
+                                    <t t-set="palladium_weight" t-value="palladium_weight + ol.temp_received_weight"/>
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+                    <t t-if="o.account_type != 'Commingled'">
+                        <t t-foreach="o.customer_order_lines" t-as="ol">
+                            <t t-set="render" t-value="False"/>
+                            <t t-if="not ol.metal_movement_id">
+                                <t t-set="render" t-value="True"/>
+                            </t>
+                            <t t-if="ol.metal_movement_id">
+                                <t t-if="ol.metal_movement_id.state == 'completed'">
+                                    <t t-set="render" t-value="True"/>
+                                </t>
+                            </t>
+                            <t t-if="render">
+                                <t t-if="ol.products.type == 'Gold'">
+                                    <t t-set="gold_seg" t-value="gold_seg + ol.temp_received_weight"/>
+                                    <t t-set="gold_weight_seg" t-value="gold_weight_seg + ol.temp_received_weight"/>
+                                </t>
+                                <t t-if="ol.products.type == 'Silver'">
+                                    <t t-set="silver_seg" t-value="silver_seg + ol.temp_received_weight"/>
+                                    <t t-set="silver_weight_seg" t-value="silver_weight_seg + ol.temp_received_weight"/>
+                                </t>
+                                <t t-if="ol.products.type == 'Platinum'">
+                                    <t t-set="platinum_seg" t-value="platinum_seg + ol.temp_received_weight"/>
+                                    <t t-set="platinum_weight_seg"
+                                       t-value="platinum_weight_seg + ol.temp_received_weight"/>
+                                </t>
+                                <t t-if="ol.products.type == 'Palladium'">
+                                    <t t-set="palladium_seg" t-value="palladium_seg + ol.temp_received_weight"/>
+                                    <t t-set="palladium_weight_seg"
+                                       t-value="palladium_weight_seg + ol.temp_received_weight"/>
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+                </t>
+            </t>
+            <h2 style="font-size:15px !important;text-align:left;text-decoration:underline;font-weight: bold;">
+                <span t-esc="custodian"/>
+            </h2>
+            <table style="page-break-inside: always;margin-bottom:60px;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                <thead>
+                    <tr style="border-bottom:1px solid black !important;">
+                        <th style="border-bottom:1px solid black !important;text-align:left !important;">
+                            Account Type
+                        </th>
+                        <th style="border-bottom:1px solid black !important;text-align:right !important;">Gold Ounces
+                        </th>
+                        <th style="border-bottom:1px solid black !important;text-align:right !important;">Silver Ounces
+                        </th>
+                        <th style="border-bottom:1px solid black !important;text-align:right !important;">Platinum
+                            Ounces
+                        </th>
+                        <th style="border-bottom:1px solid black !important;text-align:right !important;">Palladium
+                            Ounces
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Commingled
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(gold_weight)"/>
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(silver_weight)"/>
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(platinum_weight)"/>
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(palladium_weight)"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Segregated
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(gold_weight_seg)"/>
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(silver_weight_seg)"/>
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(platinum_weight_seg)"/>
+                        </td>
+                        <td align="right">
+                            <span t-esc="'{0:,.2f}'.format(palladium_weight_seg)"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Grand Total</b>
+                        </td>
+                        <td align="right">
+                            <b>
+                                <span t-esc="'{0:,.2f}'.format(gold_weight_seg + gold_weight)"/>
+                            </b>
+                        </td>
+                        <td align="right">
+                            <b>
+                                <span t-esc="'{0:,.2f}'.format(silver_weight_seg + silver_weight)"/>
+                            </b>
+                        </td>
+                        <td align="right">
+                            <b>
+                                <span t-esc="'{0:,.2f}'.format(platinum_weight_seg + platinum_weight)"/>
+                            </b>
+                        </td>
+                        <td align="right">
+                            <b>
+                                <span t-esc="'{0:,.2f}'.format(palladium_weight_seg + palladium_weight)"/>
+                            </b>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <t t-set="gold" t-value="0"/>
+            <t t-set="gold_weight" t-value="0"/>
+            <t t-set="silver" t-value="0"/>
+            <t t-set="silver_weight" t-value="0"/>
+            <t t-set="platinum" t-value="0"/>
+            <t t-set="platinum_weight" t-value="0"/>
+            <t t-set="palladium" t-value="0"/>
+            <t t-set="palladium_weight" t-value="0"/>
+            <t t-set="custodian_count" t-value="0"/>
+            <t t-set="gold_seg" t-value="0"/>
+            <t t-set="gold_weight_seg" t-value="0"/>
+            <t t-set="silver_seg" t-value="0"/>
+            <t t-set="silver_weight_seg" t-value="0"/>
+            <t t-set="platinum_seg" t-value="0"/>
+            <t t-set="platinum_weight_seg" t-value="0"/>
+            <t t-set="palladium_seg" t-value="0"/>
+            <t t-set="palladium_weight_seg" t-value="0"/>
+        </t>
+        <div class="oe_structure"/>
+    </template>
+    <template id="physical_inventory_report_template">
+        <div class="page" style="height:100%;page-break-inside: always;background-color: white !important;">
+            <style>
+                .text-right{
+                text-align:right !important;
+                padding-left:5px !important;
+                }
+                .page{
+                background-color: white !important;
+                }
+            </style>
+            <div class="oe_structure"/>
+            <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                    <div style="width:20%;float:left;">
+                        <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                             style="color:white !important;height: auto; width: 150px;"/>
+                    </div>
+                    <div style="width:20%;float:right;margin-top:11px;">
+                        <div>
+                            <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                  t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="width:100%;margin-bottom:60px !important;">
+                    <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                        Physical Inventory Summary
+                    </h2>
+                </div>
+            </div>
+            <t t-call="amgl.physical_inventory_report_template_body"/>
+        </div>
+    </template>
+</odoo>

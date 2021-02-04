@@ -1,0 +1,132 @@
+<odoo>
+    <data>
+        <record id="create_mmr_email" model="mail.template">
+            <field name="name">New Withdrawal Request</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="email_from">irastorage@amark.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="email_cc">${user.env.context.get('email_cc')}</field>
+            <field name="subject">${user.env.context.get('additional_email_subject')}
+                ${user.env.context.get('mmr_name')} ${user.env.context.get('mmr_number')}
+            </field>
+            <field name="body_html"><![CDATA[
+               <div style="font-family: 'Lucida Sans Unicode','Lucida Grande','Tahoma',Verdana,sans-serif;font-size: 15px;float:left !important;width: 150px;background: #FFFFFF repeat top /100%; color: #777777;">
+                     <img style="float:left; height: auto;" width="150" src="https://image.ibb.co/nsSc9c/amgl_logo_web_600px.png" alt="${user.company_id.name}" />
+                </div>
+               <br />
+               <div style="font-family: 'Lucida Sans Unicode','Lucida Grande','Tahoma',Verdana,sans-serif;font-size: 15px;padding: 0px;float:left !important; width: 600px; margin: auto; background: #FFFFFF repeat top /100%; color: #777777;">
+                    <p>Dear ${user.env.context.get('approver_name')},</p>
+                    <p>A new Withdrawal request has been assigned to you for approval. Review the details and click the approve button below.</p>
+                     <br />
+                    <strong style="color:black;">WITHDRAWAL REQUEST DETAILS</strong>
+                    <table style="font-family: 'Lucida Sans Unicode','Lucida Grande','Tahoma',Verdana,sans-serif;font-size: 15px;">
+                        <tr>
+                            <td>
+                                Date Created:
+                            </td>
+                            <td style="padding-left:30px;">
+                                ${user.env.context.get('date')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Reference:
+                            </td>
+                            <td style="padding-left:30px;">
+                                ${user.env.context.get('ref')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                               Withdrawal Type:
+                            </td>
+                            <td style="padding-left:30px;">
+                                ${user.env.context.get('mmt')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                               Withdrawal#:
+                            </td>
+                            <td style="padding-left:30px;">
+                                ${user.env.context.get('mmr_number')}
+                            </td>
+                        </tr>
+                    </table>
+				     </br>
+				      <br />
+					<strong style="color:black;margin-top:10px;margin-bottom:30px;">MOVE METAL FROM</strong>
+					 <table style="font-family: 'Lucida Sans Unicode','Lucida Grande','Tahoma',Verdana,sans-serif;font-size: 15px;">
+                        <tr>
+                            <td>
+                                Custodian:
+                            </td>
+                            <td style="padding-left:70px;">
+                                ${user.env.context.get('custodian')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Customer:
+                            </td>
+                            <td style="padding-left:70px;">
+                                ${user.env.context.get('customer')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Account Number:
+                            </td>
+                            <td style="padding-left:70px;">
+                                ${user.env.context.get('mmf_accountnumber')}
+                            </td>
+                        </tr>
+						<tr>
+                            <td>
+                                Account Type:
+                            </td>
+                            <td style="padding-left:70px;">
+                                ${user.env.context.get('mmf_accounttype')}
+                            </td>
+                        </tr>
+                    </table>
+                     <br />
+                    <strong style="color:black;margin-top:10px;margin-bottom:10px;">MOVE METAL TO</strong>
+					 <table style="font-family: 'Lucida Sans Unicode','Lucida Grande','Tahoma',Verdana,sans-serif;font-size: 15px;">
+                        <tr>
+                            <td>
+                               Name:
+                            </td>
+                            <td style="padding-left:70px;">
+                                ${user.env.context.get('mmt_name')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Address:
+                            </td>
+                            <td style="padding-left:70px;">
+                                ${user.env.context.get('mmt_address')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Account Number:
+                            </td>
+                            <td style="padding-left:70px;">
+                                ${user.env.context.get('mmt_account_number')}
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <a style="padding: 5px 10px; font-size: 12px; line-height: 18px; color: #ffffff; border-color: #875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: green; border: 1px solid #875A7B; border-radius: 3px;" href="${user.env.context.get('mmr_link')}">Approve</a>
+                    <br />
+                    <br />
+                    <p>Thank you,</p>
+                    <p>AMGL IRA Storage Team</p>
+                </div>
+            ]]></field>
+            <field name="user_signature" eval="False"/>
+        </record>
+    </data>
+</odoo>

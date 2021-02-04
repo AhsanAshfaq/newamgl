@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <template id="assets_backend" name="costum assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+				<link rel="stylesheet" href="/amgl/static/src/css/module.css"/>
+				<script type="text/javascript" src="/amgl/static/src/js/arrive.js"></script>
+                <script type="text/javascript" src="/amgl/static/src/js/jquery-watch.js"></script>
+                <script type="text/javascript" src="/amgl/static/src/js/amgl.js"></script>
+                <script type="text/javascript" src="/amgl/static/src/js/jquery.inputmask.bundle.js" />
+                <script type="text/javascript" src="/amgl/static/src/js/widgets.js" />
+                <script type="text/javascript" src="/amgl/static/src/js/duplicate_visibility.js"></script>
+                <link rel="stylesheet" href="/amgl/static/src/css/resizable.css"/>
+                <script type="text/javascript" src="/amgl/static/src/js/resizable.js"></script>
+                <script type="text/javascript" src="/amgl/static/src/js/store.min.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

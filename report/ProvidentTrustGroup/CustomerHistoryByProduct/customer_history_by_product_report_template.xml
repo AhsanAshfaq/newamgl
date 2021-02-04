@@ -1,0 +1,355 @@
+<odoo>
+    <template id="customer_history_by_product_report_template_body_provident">
+        <t t-set="is_valid" t-value="docs.check_customer_order_lines(docs, 'Provident')"/>
+        <t t-if=" is_valid  == True ">
+            <div style="page-break-inside: always;background-color: white !important;">
+                <style>
+                    .text-right{
+                    text-align:right !important;
+                    padding-left:5px !important;
+                    }
+                    .page{
+                    background-color: white !important;
+                    }
+                </style>
+                <div class="oe_structure"/>
+                <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                    <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                        <div style="width:20%;float:left;">
+                            <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                                 style="color:white !important;height: auto; width: 150px;"/>
+                        </div>
+                        <div style="width:20%;float:right;margin-top:11px;">
+                            <div>
+                                <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                      t-esc="docs.getFormattedDate()"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div style="width:100%;margin-bottom:60px !important;">
+                        <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                            Customer History by Product
+                        </h2>
+                        <h3 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                            Provident Trust Group
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <t t-foreach="docs" t-as="o">
+                <t t-if="len(o.customer_order_lines) > 0">
+                    <t t-set="custodian_name" t-value="docs.custodian_name(o)"/>
+                    <t t-set="order_type" t-if="o.get_sorted_list(o.customer_order_lines)"
+                       t-value="o.get_sorted_list(o.customer_order_lines)[0].products.gs_product_code"/>
+                    <t t-set="total_quantity" t-value="0"/>
+                    <t t-set="unique_products" t-value="[]"/>
+                    <t t-set="unique_product_total" t-value="0"/>
+                    <t t-if="len(o.get_sorted_list(o.customer_order_lines)) > 0">
+                        <div style="font-weight: bold;display:inline-block;border-top:1px solid;font-family:monospace !important;font-size:9px;margin-top:50px;width:100%;">
+                            <t t-set="is_compatible" t-value="docs.check_header_details_for_font_compatibility(o)"/>
+                            <t t-if="not is_compatible">
+                                <div style="font-size:7px !important;float:left;width:24%;margin-top:10px;">
+                                    <span t-field="o.last_name"/>,
+                                    <span t-field="o.account_number"/>
+                                </div>
+                                <div style="font-size:7px !important;float:left;width:34%;margin-top:10px;">
+                                    <span t-field="o.full_name"/>,
+                                    <span t-field="o.account_number"/>
+                                </div>
+                                <div style="font-size:7px !important;float:left;width:20%;margin-top:10px;">
+                                    <span t-field="o.account_number"/>
+                                </div>
+                                <!--<div style="font-size:7px !important;float:left;width:10%;margin-top:10px;">-->
+                                    <!--<span t-field="o.account_number"/>-->
+                                <!--</div>-->
+                                <div style="font-size:7px !important;text-align:left;float:left;width:22%;margin-top:10px;">
+                                    <t t-if=" o.account_type == 'Commingled'">
+                                        IRA-NS
+                                    </t>
+                                    <t t-if=" o.account_type == 'Segregated'">
+                                        IRA-S
+                                    </t>
+                                    <span style="margin-right:5px;"/>
+                                    <span t-esc="custodian_name"/>
+                                </div>
+                            </t>
+                            <t t-if="is_compatible">
+                                <div style="float:left;width:24%;margin-top:10px;">
+                                    <span t-field="o.last_name"/>,
+                                    <span t-field="o.account_number"/>
+                                </div>
+                                <div style="float:left;width:34%;margin-top:10px;">
+                                    <span t-field="o.full_name"/>,
+                                    <span t-field="o.account_number"/>
+                                </div>
+                                <div style="float:left;width:20%;margin-top:10px;">
+                                    <span t-field="o.account_number"/>
+                                </div>
+                                <!--<div style="float:left;width:10%;margin-top:10px;">-->
+                                    <!--<span t-field="o.account_number"/>-->
+                                <!--</div>-->
+                                <div style="text-align:left;float:left;width:22%;margin-top:10px;">
+                                    <t t-if=" o.account_type == 'Commingled'">
+                                        IRA-NS
+                                    </t>
+                                    <t t-if=" o.account_type == 'Segregated'">
+                                        IRA-S
+                                    </t>
+                                    <span style="margin-right:5px;"/>
+                                    <span t-esc="custodian_name"/>
+                                </div>
+                            </t>
+                        </div>
+                        <table
+                                style="border-collapse: separate !important; border-spacing:1px !important;page-break-inside: always;margin-top:26px;width:100%;
+                                   font-family:monospace !important;font-size:6px !important;">
+                            <thead>
+                                <tr class="text-left">
+                                    <th style="border-bottom:1px solid;" align="left">Ref#</th>
+                                    <th style="border-bottom:1px solid;" align="left">Date</th>
+                                    <th style="border-bottom:1px solid;" align="left">Prod Code</th>
+                                    <th style="border-bottom:1px solid;" align="left">Product Description</th>
+                                    <th style="border-bottom:1px solid;"></th>
+                                    <th style="text-align:right !important;border-bottom:1px solid;" align="left">
+                                        Units
+                                    </th>
+                                    <th style="text-align:right !important;border-bottom:1px solid;margin-left:10px;">
+                                        Gold
+                                    </th>
+                                    <th style="text-align:right !important;border-bottom:1px solid;margin-left:5px;">
+                                        Silver
+                                    </th>
+                                    <th style="text-align:right !important;border-bottom:1px solid;padding-left:10px;">
+                                        Plat
+                                    </th>
+                                    <th style="text-align:right !important;border-bottom:1px solid;margin-left:10px;">
+                                        Pall
+                                    </th>
+                                    <th style="padding-left:5px !important;border-bottom:1px solid;" align="left">
+                                        Vault
+                                    </th>
+                                </tr>
+                                <!--<tr style="height:3px !important;"> </tr>-->
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                            <tbody class="sale_tbody"
+                                   t-if="o.get_sorted_list(o.customer_order_lines,sort_by_product_code = True)">
+                                <t t-foreach="o.get_sorted_list(o.customer_order_lines,sort_by_product_code = True)"
+                                   t-as="single_ol">
+                                    <t t-if="single_ol.products.gs_product_code not in unique_products">
+                                        <t t-set="unique_products"
+                                           t-value="unique_products+[single_ol.products.gs_product_code]"/>
+                                    </t>
+                                </t>
+                                <t t-foreach="unique_products" t-as="unique_product_code">
+                                    <t t-foreach="o.get_sorted_list(o.customer_order_lines,sort_by_product_id = True)"
+                                       t-as="ol">
+                                        <t t-if="ol.products.gs_product_code == unique_product_code">
+                                            <t t-set="is_ol_validated" t-value="ol.validate_order_line(ol)"/>
+                                            <t t-if="is_ol_validated">
+                                                <t t-set="unique_product_total"
+                                                   t-value="unique_product_total + (ol.total_received_quantity)"/>
+                                                <t t-set="total_quantity"
+                                                   t-value="total_quantity + ol.total_received_quantity"/>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <!--<tr style="height:2px"></tr>-->
+                                                <tr>
+                                                    <td style="width:50px !important;" class="text-left">
+                                                        <span t-field="ol.batch_number"/>
+                                                    </td>
+                                                    <td style="width:40px !important;" class="text-left">
+                                                        <span t-field="ol.date_for_customer_metal_activitiy"/>
+                                                    </td>
+                                                    <td style="width:60px !important;">
+                                                        <span t-field="ol.products.gs_product_code"/>
+                                                    </td>
+                                                    <td style="width:200px !important;">
+                                                        <span t-field="ol.products"/>
+                                                    </td>
+                                                    <td></td>
+                                                    <td class="text-right" style="width:50px;">
+                                                        <t t-if="ol.metal_movement_id">
+                                                            (
+                                                                <span t-esc="'{0:,.0f}'.format(float(-(ol.total_received_quantity)))"/>
+                                                            )
+                                                        </t>
+                                                        <t t-if="not ol.metal_movement_id">
+                                                            <span t-esc="'{0:,.0f}'.format(float(ol.total_received_quantity))"/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-if="ol.commodity == 'Gold'">
+                                                            <t t-set="gold_total"
+                                                               t-value="gold_total + ol.temp_received_weight"/>
+                                                        </t>
+                                                        <t t-if="ol.commodity == 'Gold'">
+                                                            <span t-esc="'{0:,.2f}'.format(float(ol.temp_received_weight))"/>
+                                                            oz
+                                                        </t>
+                                                        <t t-if="not ol.commodity == 'Gold'">
+                                                            0.00 oz
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-right" style="width:50px;">
+                                                        <t t-if="ol.commodity == 'Silver'">
+                                                            <t t-set="silver_total"
+                                                               t-value="silver_total + ol.temp_received_weight"/>
+                                                        </t>
+                                                        <t t-if="ol.commodity == 'Silver'">
+                                                            <span t-esc="'{0:,.2f}'.format(float(ol.temp_received_weight))"/>
+                                                            oz
+                                                        </t>
+                                                        <t t-if="not ol.commodity == 'Silver'">
+                                                            0.00 oz
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-right" style="width:50px;">
+                                                        <t t-if="ol.commodity == 'Platinum'">
+                                                            <t t-set="platinum_total"
+                                                               t-value="platinum_total + ol.temp_received_weight"/>
+                                                        </t>
+                                                        <t t-if="ol.commodity == 'Platinum'">
+                                                            <span t-esc="'{0:,.2f}'.format(float(ol.temp_received_weight))"/>
+                                                            oz
+                                                        </t>
+                                                        <t t-if="not ol.commodity == 'Platinum'">
+                                                            0.00 oz
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-right" style="width:50px;">
+                                                        <t t-if="ol.commodity == 'Palladium'">
+                                                            <t t-set="palladium_total"
+                                                               t-value="palladium_total + ol.temp_received_weight"/>
+                                                        </t>
+                                                        <t t-if="ol.commodity == 'Palladium'">
+                                                            <span t-esc="'{0:,.2f}'.format(float(ol.temp_received_weight))"/>
+                                                            oz
+                                                        </t>
+                                                        <t t-if="not ol.commodity == 'Palladium'">
+                                                            0.00 oz
+                                                        </t>
+                                                    </td>
+                                                    <td style="padding-left:5px !important;" align="left">
+                                                        <span t-field="ol.vault"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </t>
+
+                                    <tr>
+                                        <td colspan="4"></td>
+                                        <td style="padding-bottom:1px !important;text-align:right !important;width:85px !important;text-decoration: underline;">
+                                            <strong>
+                                                <span t-esc="unique_product_code"/>
+                                            </strong>
+                                        </td>
+                                        <td align="right"
+                                            style="width:50px;border-top:1px solid;border-bottom:1px solid;padding-bottom:1px !important;">
+                                            <strong>
+                                                <span t-esc="'{0:,.0f}'.format(float(unique_product_total))"/>
+                                            </strong>
+                                        </td>
+                                        <td colspan="4"></td>
+                                    </tr>
+
+                                    <t t-set="unique_product_total" t-value="0"/>
+                                </t>
+                                <tr style="height:2px !important;"></tr>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <td class="text-right"
+                                        style="width:50px;border-top:1px solid;border-bottom:1px solid;">
+                                        <strong>
+                                            <span t-esc="'{0:,.0f}'.format(float(total_quantity))"/>
+                                        </strong>
+                                    </td>
+                                    <td class="text-right"
+                                        style="width:50px;border-top:1px solid;border-bottom:1px solid;">
+                                        <strong>
+                                            <span t-esc="'{0:,.2f}'.format(float(gold_total))"/>
+                                            oz
+                                        </strong>
+                                    </td>
+
+                                    <td class="text-right"
+                                        style="width:50px;border-top:1px solid;border-bottom:1px solid;">
+                                        <strong>
+                                            <span t-esc="'{0:,.2f}'.format(float(silver_total))"/>
+                                            oz
+                                        </strong>
+                                    </td>
+
+                                    <td class="text-right"
+                                        style="width:50px;border-top:1px solid;border-bottom:1px solid;">
+                                        <strong>
+                                            <span t-esc="'{0:,.2f}'.format(float(platinum_total))"/>
+                                            oz
+                                        </strong>
+                                    </td>
+                                    <td class="text-right"
+                                        style="width:50px;border-top:1px solid;border-bottom:1px solid;">
+                                        <strong>
+                                            <span t-esc="'{0:,.2f}'.format(float(palladium_total))"/>
+                                            oz
+                                        </strong>
+                                    </td>
+                                    <td colspan="2" style="width:50px;"></td>
+
+                                    <t t-set="gold_total" t-value="0.00"/>
+                                    <t t-set="silver_total" t-value="0.00"/>
+                                    <t t-set="platinum_total" t-value="0.00"/>
+                                    <t t-set="palladium_total" t-value="0.00"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+                <div class="oe_structure"/>
+            </t>
+        </t>
+        <t t-if="is_valid == False ">
+            <div class="page">
+                <h1 style="text-align:center !important;">No Data Found.</h1>
+            </div>
+        </t>
+    </template>
+    <template id="customer_history_by_product_report_template_provident">
+        <t t-set="order_type" t-value="gold"/>
+        <t t-set="gold_total" t-value="0.00"/>
+        <t t-set="silver_total" t-value="0.00"/>
+        <t t-set="platinum_total" t-value="0.00"/>
+        <t t-set="palladium_total" t-value="0.00"/>
+        <div class="page" style="page-break-inside: always;background-color: white !important;">
+            <t t-call="amgl.customer_history_by_product_report_template_body_provident"/>
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="amgl.inventory_form" model="ir.ui.view">
+            <field name="name">Inventory</field>
+            <field name="model">amgl.inventory</field>
+            <field name="arch" type="xml">
+                <form string="Add A Deposit" duplicate="0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

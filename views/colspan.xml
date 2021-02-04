@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+<div t-extend="ListView">
+     <t t-jquery="table" t-operation="replace">
+        <table class="o_list_view table table-condensed table-striped">
+        <t t-set="columns_count" t-value="visible_columns.length + (options.selectable ? 1 : 0) + (options.deletable ? 1 : 0)"/>
+        <thead>
+            <tr t-if="options.header">
+                <t t-foreach="columns" t-as="column">
+                    <th t-if="column.meta">
+                        <t t-esc="column.string"/>
+                    </th>
+                </t>
+                <th t-if="options.selectable" class="o_list_record_selector" width="1" >
+                    <div class="o_checkbox">
+                        <input type="checkbox"/><span/>
+                    </div>
+                </th>
+                <t t-set="col" t-value="0"/>
+                <t t-foreach="columns" t-as="column" >
+                    <t t-if="col == 0">
+                    <th t-if="!column.meta and column.invisible !== '1'" t-att-data-id="column.id"
+                        t-attf-style="#{column.colspan >= 2 ? 'text-align:center !important;' : ''}"
+                        t-attf-class="#{((options.sortable and column.sortable and column.tag !== 'button') ? 'o_column_sortable' : '')}"
+                            t-att-width="column.width()" t-att-colspan="column.colspan">
+                        <t t-set="col" t-value="column.colspan or 1"/>
+                        <t t-if="column.tag !== 'button'">
+                            <t t-raw="column.heading()"/>
+                        </t>
+                    </th>
+                    </t>
+                    <t t-if="col !== 0" t-set="col" t-value="col - 1"/>
+                </t>
+                <th t-if="options.deletable" class="o_list_record_delete"/>
+            </tr>
+        </thead>
+            <tfoot>
+        </tfoot>
+    </table>
+    </t>
+</div>
+<t t-name="ListView.rows" >
+        <t t-set="first_column" t-value="1"/>
+        <t t-set="row_count" t-value="0"/>
+        <t t-set="total_rows" t-value="records.length"/>
+        <t t-foreach="records.length" t-as="index">
+            <t t-call="ListView.row">
+                <t t-set="record" t-value="records.at(index)"/>
+            </t>
+            <t t-set="first_column" t-value="0"/>
+            <t t-set="row_count" t-value="row_count + 1"/>
+        </t>
+    </t>
+    <tr t-name="ListView.row"
+            t-att-data-id="record.get('id')"
+            t-attf-style="#{(view.fonts || view.colors) ? view.style_for(record) : ''}"
+            t-attf-class="#{view.compute_decoration_classnames(record)}">
+            <t t-set="add_td" t-value="false"/>
+        <t t-set="asData" t-value="record.toForm().data"/>
+        <t t-foreach="columns" t-as="column">
+            <td t-if="column.meta"> </td>
+        </t>
+        <td t-if="options.selectable" class="o_list_record_selector">
+            <t t-set="checked" t-value="options.select_view_id == record.get('id') ? 'checked' : null"/>
+            <input t-if="options.radio" type="radio" name="radiogroup" t-att-checked="checked"/>
+            <div t-if="!options.radio" class="o_checkbox">
+                <input type="checkbox" name="radiogroup" t-att-checked="checked"/><span/>
+            </div>
+        </td>
+
+        <t t-foreach="columns" t-as="column">
+            <t t-set="number" t-value="column.type === 'integer' or column.type == 'float' or column.type == 'monetary'"/>
+            <t t-set="text" t-value="column.type === 'text'"/>
+            <t t-set="modifiers" t-value="column.modifiers_for(asData)"/>
+            <td t-if="!column.meta and column.invisible !== '1'" t-att-title="column.help"
+                t-attf-class="
+                #{modifiers.readonly ? 'o_readonly' : ''} #{number ? 'o_list_number' : ''} #{text ? 'o_list_text' : ''}
+                #{column.id === 'sequence' ? 'o_handle_cell' : ''} #{column.tag === 'button' ? 'o_list_button' : ''}"
+                t-att-data-field="column.id"
+                >
+                <t t-if="row_count == 0">
+                <div>
+
+                <h5 style="font-weight: 500;font-size: 13px;text-align: center;margin-top: 2px;margin-bottom: 6px;color: black;text-decoration: underline;">
+                    <t t-esc="column.subheading"></t>
+                </h5>
+                <p style="margin-bottom: -2px;">
+                    <t t-raw="render_cell(record, column)"/><t t-if="column.id == 'total_weight' or column.id == 'weight' or column.id == 'remaining_weight' or column.id == 'temp_received_weight'">
+                        <b>oz.</b>
+                    </t>
+
+                </p>
+                </div>
+                </t>
+                <t t-if="row_count != 0">
+                    <p style="margin-bottom: -2px;">
+                    <t t-raw="render_cell(record, column)"/><t t-if="column.id == 'total_weight' or column.id == 'weight' or column.id == 'remaining_weight' or column.id == 'temp_received_weight'">
+                        <b>oz.</b>
+                    </t>
+                    </p>
+                </t>
+            </td>
+        </t>
+        <td t-if="options.deletable" class='o_list_record_delete'>
+            <span name="delete" class="fa fa-trash-o"/>
+        </td>
+    </tr>
+</templates>

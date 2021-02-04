@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <record id="amgl.product_brands_form" model="ir.ui.view">
+            <field name="name">Product Brands</field>
+            <field name="model">amgl.product.brands</field>
+            <field name="arch" type="xml">
+                <form string="Product Brands">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="amgl.product_brands_tree" model="ir.ui.view">
+            <field name="name">Product Brands</field>
+            <field name="model">amgl.product.brands</field>
+            <field name="arch" type="xml">
+                <tree string="Product Brands">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

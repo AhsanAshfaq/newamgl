@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Customer Metal Activity"
+            id="action_report_customer_metal_activity"
+            model="amgl.customer"
+            report_type="qweb-pdf"
+            name="amgl.report_customer_metal_activity"
+            file="amgl.report_customer_metal_activity"
+            attachment_use="True"
+            groups="amgl.group_amark_admins,amgl.group_amark_sub_admins,amgl.group_amark_custodian"
+         />
+    </data>
+</odoo>

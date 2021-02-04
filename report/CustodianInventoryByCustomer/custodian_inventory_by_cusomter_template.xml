@@ -1,0 +1,801 @@
+<odoo>
+    <template id="custodian_inventory_by_product_report_template_body">
+        <t t-set="total_gold_commingled" t-value="0"/>
+        <t t-set="total_silver_commingled" t-value="0"/>
+        <t t-set="total_platinum_commingled" t-value="0"/>
+        <t t-set="total_palladium_commingled" t-value="0"/>
+        <t t-set="total_gold_seg" t-value="0"/>
+        <t t-set="total_silver_seg" t-value="0"/>
+        <t t-set="total_platinum_seg" t-value="0"/>
+        <t t-set="total_palladium_seg" t-value="0"/>
+        <t t-set="total_weight_commingled" t-value="0"/>
+        <t t-set="total_weight_seg" t-value="0"/>
+        <t t-set="commingled_exist" t-value="False"/>
+        <t t-set="segregated_exist" t-value="False"/>
+        <t t-set="custodians" t-value="docs.get_custodians(docs)"/>
+        <t t-foreach="custodians" t-as="custodian">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.account_type == 'Commingled'">
+                    <t t-set="commingled_exist" t-value="True"/>
+                </t>
+                <t t-if="o.account_type != 'Commingled'">
+                    <t t-set="segregated_exist" t-value="True"/>
+                </t>
+            </t>
+            <div style="clear:both;"></div>
+            <h2 style="margin-bottom: 30px !important;margin-bottom: 20px !important;font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                <span t-esc="custodian"/>
+            </h2>
+            <!-- Commingled Start -->
+
+            <t t-if="commingled_exist">
+
+                <div style="width:100 % !important;border-top: 1px solid black !important;border-bottom: 1px solid black !important;">
+                    <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:center;font-weight: bold;">
+                        Commingled
+                    </h2>
+                </div>
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Gold
+                </h2>
+
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="products" t-value="docs.get_products('Gold')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Commingled')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                    <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_gold_commingled"
+                                           t-value="total_gold_commingled + product_details[4]"/>
+                                        <t t-set="total_weight_commingled"
+                                           t-value="total_weight_commingled + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td style="padding-top:10px !important;" align="left" colspan="4">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_gold_commingled)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Silver
+                </h2>
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="products" t-value="docs.get_products('Silver')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Commingled')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                    <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_silver_commingled"
+                                           t-value="total_silver_commingled + product_details[4]"/>
+                                        <t t-set="total_weight_commingled"
+                                           t-value="total_weight_commingled + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td align="left" colspan="4" style="padding-top:10px !important;">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_silver_commingled)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Platinum
+                </h2>
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="products" t-value="docs.get_products('Platinum')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Commingled')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                   <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_platinum_commingled"
+                                           t-value="total_platinum_commingled + product_details[4]"/>
+                                        <t t-set="total_weight_commingled"
+                                           t-value="total_weight_commingled + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td align="left" colspan="4" style="padding-top:10px !important;">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_platinum_commingled)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Palladium
+                </h2>
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="products" t-value="docs.get_products('Palladium')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Commingled')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                    <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_palladium_commingled"
+                                           t-value="total_palladium_commingled + product_details[4]"/>
+                                        <t t-set="total_weight_commingled"
+                                           t-value="total_weight_commingled + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td align="left" colspan="4" style="padding-top:10px !important;">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_palladium_commingled)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table style="margin-top:20px !important;float:right;width:35%;border:2px  solid black !important; border-collapse: collapse;">
+                    <thead>
+
+                        <tr>
+                            <td colspan="4" style="align:left !important;font-size:12px !important;font-weight: bold;">
+                                SUMMARY
+                            </td>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:12px !important;">Gold</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_gold_commingled)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:12px !important;">Silver</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_silver_commingled)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:12px !important;">Platinum</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_platinum_commingled)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:12px !important;">Palladium</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_palladium_commingled)"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </t>
+            <!-- Commingled End -->
+            <div style="clear:both;"></div>
+            <br/>
+            <!-- Segregated Start -->
+            <t t-if="segregated_exist">
+
+                <div style="width:100 % !important;border-top: 1px solid black !important;border-bottom: 1px solid black !important;">
+                    <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:center;font-weight: bold;">
+                        Segregated
+                    </h2>
+                </div>
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Gold
+                </h2>
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="total_weight" t-value="0"/>
+                        <t t-set="products" t-value="docs.get_products('Gold')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Segregated')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                    <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_gold_seg"
+                                           t-value="total_gold_seg + product_details[4]"/>
+                                        <t t-set="total_weight_seg"
+                                           t-value="total_weight_seg + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td align="left" colspan="4" style="padding-top:10px !important;">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_gold_seg)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Silver
+                </h2>
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="products" t-value="docs.get_products('Silver')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Segregated')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                    <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_silver_seg"
+                                           t-value="total_silver_seg + product_details[4]"/>
+                                        <t t-set="total_weight_seg"
+                                           t-value="total_weight_seg + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td align="left" colspan="4" style="padding-top:10px !important;">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_silver_seg)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Platinum
+                </h2>
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                       <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="products" t-value="docs.get_products('Platinum')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Segregated')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                    <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_platinum_seg"
+                                           t-value="total_platinum_seg + product_details[4]"/>
+                                        <t t-set="total_weight_seg"
+                                           t-value="total_weight_seg + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td align="left" colspan="4" style="padding-top:10px !important;">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_platinum_seg)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 style="margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                    Commodity : Palladium
+                </h2>
+                <table class="table table-condensed"
+                       style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black !important;">
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Code
+                            </th>
+                            <th style="width:50% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                Product Description
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Units</th>
+                            <th style="width:20% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounce
+                                Conversion
+                            </th>
+                            <th style="width:10% !important;border-bottom:1px solid black !important;text-align:right !important;">Ounces</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="products" t-value="docs.get_products('Palladium')"/>
+                        <t t-foreach="products" t-as="p">
+                            <t t-set="product_details" t-value="docs.get_products_details(p, custodian, 'Segregated')"/>
+                            <t t-if="product_details[2] > 0">
+                                <tr>
+                                    <td>
+                                        <span t-esc="product_details[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="product_details[1]"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(product_details[2])"/>
+                                    </td>
+                                    <td align="right">
+                                        <t t-if="str(product_details[5]) == 'oz'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3])"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'gram'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 0.03215)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'kg'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 32.15)"/>
+                                        </t>
+                                        <t t-if="str(product_details[5]) == 'pounds'">
+                                            <span t-esc="'{0:,.2f}'.format(product_details[3] * 16)"/>
+                                        </t>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(product_details[4])"/>
+                                        <t t-set="total_palladium_seg"
+                                           t-value="total_palladium_seg + product_details[4]"/>
+                                        <t t-set="total_weight_seg"
+                                           t-value="total_weight_seg + product_details[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td align="left" colspan="4" style="padding-top:10px !important;">
+                                <b>Grand Total</b>
+                            </td>
+                            <td align="right"
+                                style="border-bottom:1px solid black !important;border-top:1px solid black !important;">
+                                <b>
+                                    <span t-esc="'{0:,.2f}'.format(total_palladium_seg)"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <div style="clear:both;"></div>
+                <table style="margin-top:20px !important;float:right;width:35%;border:2px  solid black !important; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <td colspan="4" style="align:left !important;font-size:12px !important;font-weight: bold;">
+                                SUMMARY
+                            </td>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:12px !important;">Gold</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_gold_seg)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:12px !important;">Silver</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_silver_seg)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:12px !important;">Platinum</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_platinum_seg)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:12px !important;">Palladium</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:12px !important;text-align:right !important;">
+                                <span t-esc="'{0:,.2f}'.format(total_palladium_seg)"/>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </t>
+            <!-- Segregated End -->
+        </t>
+        <div class="oe_structure"/>
+    </template>
+    <template id="custodian_inventory_by_product_report_template">
+        <t t-if="len(docs) == 0">
+            <div class="page">
+                <h3 style="text-align:center;font-weight: bold;">
+                    No data found...
+                </h3>
+            </div>
+        </t>
+        <t t-if="len(docs) > 0">
+            <div class="page" style="height:100%;page-break-inside: always;background-color: white !important;">
+                <style>
+                    .text-right{
+                    text-align:right !important;
+                    padding-left:5px !important;
+                    }
+                    .page{
+                    background-color: white !important;
+                    }
+                </style>
+                <div class="oe_structure"/>
+                <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                    <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                    <div style="width:20%;float:left;">
+                        <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                             style="color:white !important;height: auto; width: 150px;"/>
+                    </div>
+                    <div style="width:20%;float:right;margin-top:11px;">
+                        <div>
+                            <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                  t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                        </div>
+                    </div>
+                </div>
+                    <div style="clear:both;"></div>
+                    <div style="width:100%;">
+                        <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                            Custodian Inventory By Product
+                        </h2>
+                    </div>
+                </div>
+                <t t-call="amgl.custodian_inventory_by_product_report_template_body"/>
+            </div>
+        </t>
+    </template>
+</odoo>

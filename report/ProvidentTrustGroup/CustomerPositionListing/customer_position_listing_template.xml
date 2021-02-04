@@ -1,0 +1,182 @@
+<odoo>
+    <template id="customer_position_listing_report_template_body_provident">
+        <t t-foreach="docs" t-as="o">
+            <div style="clear:both;"></div>
+            <t t-set="order_lines" t-value="docs.get_ols_for_customer_position_listing(o)"/>
+            <t t-if="len(order_lines) > 0">
+                <div style="display:inline-block;font-family:monospace !important;font-size:9px;margin-top:5px;width:100%;">
+                    <div style="float:left;width:30%;margin-top:10px;">
+                        <b>
+                            <span t-esc="o.last_name"/>,
+                            <span t-esc="o.account_number"/>
+                            <br/>
+                            <span t-esc="o.full_name"/>
+                        </b>
+                    </div>
+                    <div style="float:left;width:40%;margin-top:10px;text-align:center !important;">
+                        <span>
+                            <b>Account# :</b>
+                        </span>
+                        <span style="margin-right:25px;" t-field="o.account_number"/>
+                        <!--<span>-->
+                            <!--<b>GST# :</b>-->
+                        <!--</span>-->
+                        <!--<t t-if="'Gold' in o.custodian_id.name">-->
+                            <!--<span style="margin-right:15px;" t-field="o.gst_account_number"/>-->
+                        <!--</t>-->
+                        <!--<t t-if="'Gold' not in o.custodian_id.name">-->
+                            <!--<span style="margin-right:15px;" t-field="o.account_number"/>-->
+                        <!--</t>-->
+
+                    </div>
+                    <div style="text-align:right;float:left;width:30%;margin-top:10px;">
+                        <b>
+                            <t t-if=" o.account_type == 'Commingled'">
+                                IRA-NS
+                            </t>
+                            <t t-if=" o.account_type == 'Segregated'">
+                                IRA-S
+                            </t>
+                        </b>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="border-bottom:2px solid black !important;"></div>
+                <table style="border-bottom: 2px solid black !important;border-collapse:separate;border-spacing:1px;margin-bottom:30px !important;width:100%;font-family:monospace !important;font-size:9px !important;">
+                    <thead style="border-top:2px solid black !important;">
+                        <tr>
+                            <th style="padding-bottom:10px !important;text-decoration:underline;text-align:center !important;">
+                                SUMMARY
+                            </th>
+                            <th></th>
+                            <th colspan="2"
+                                style="padding-bottom:10px !important;text-decoration:underline;text-align:center; !important;">
+                                DETAILS
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width:50%;font-size:9px !important;text-decoration:underline;text-align:left !important;">
+                                Product Code and
+                                Description
+                            </th>
+                            <th style="width:10%;font-size:9px !important;text-decoration:underline;text-align:right !important;padding-right:5px !important;">
+                                Total Units Held
+                            </th>
+                            <th style="width:10%;font-size:9px !important;text-decoration:underline;text-align:left !important;">
+                                Activity
+                                Date
+                            </th>
+                            <th style="width:10%;font-size:9px !important;text-decoration:underline;text-align:right !important;">
+                                Product
+                                Activity
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <t t-foreach="o.get_sorted_list(order_lines,sort_by_product_code = True)"
+                           t-as="ol">
+                            <t t-set="activity_details" t-value="docs.get_activity_details(ol)"/>
+
+                            <tr>
+                                <td style="width:360px !important;font-size:6px !important;">
+                                    <div style="float:left !important; width:70px !important;">
+                                        <span t-esc="ol.products.gs_product_code"/>
+                                    </div>
+                                    <t t-if="ol.commodity == 'Gold'">
+                                        <span>GOLD -</span>
+                                    </t>
+                                    <t t-if="ol.commodity == 'Silver'">
+                                        <span>SILVER -</span>
+                                    </t>
+                                    <t t-if="ol.commodity == 'Platinum'">
+                                        <span>PLATINUM -</span>
+                                    </t>
+                                    <t t-if="ol.commodity == 'Palladium'">
+                                        <span>PALLADIUM -</span>
+                                    </t>
+
+                                    <span t-esc="ol.products.goldstar_name"/>
+                                </td>
+                                <td style="padding-right:5px;border-right:1px solid black;font-size:6px !important;"
+                                    align="right">
+                                    <span t-esc="'{0:,.0f}'.format(activity_details[0])"/>
+                                </td>
+                                <td style="padding-left:5px;font-size:6px !important;">
+                                    <span t-esc="activity_details[1]"/>
+                                </td>
+                                <td style="text-align:right;font-size:6px !important;" align="right">
+                                    <span t-esc="'{0:,.0f}'.format(activity_details[2])"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <div style="clear:both;"></div>
+            </t>
+        </t>
+    </template>
+    <template id="customer_position_listing_report_template_provident">
+        <t t-if="len(docs) == 0">
+            <div class="page">
+                <h3 style="text-align:center;font-weight: bold;">
+                    No data found...
+                </h3>
+            </div>
+        </t>
+        <t t-if="len(docs) > 0">
+            <div class="page" style="height:100%;page-break-inside: always;background-color: white !important;">
+                <style>
+                    .text-right{
+                    text-align:right !important;
+                    padding-left:5px !important;
+                    }
+                    .page{
+                    background-color: white !important;
+                    }
+                </style>
+                <div class="oe_structure"/>
+                <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                    <div style="width:20%;float:left;">
+                        <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                             style="color:white !important;height: auto; width: 150px;"/>
+                    </div>
+                    <div style="width:20%;float:right;margin-top:11px;">
+                        <div>
+                            <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                  t-esc="docs.getFormattedDate()"/>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                    <div style="clear:both;"></div>
+                    <div style="width:100%;">
+                        <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                            Customer Position Listing
+                        </h2>
+                        <h3 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                            Provident Trust Group
+                        </h3>
+                    </div>
+
+                </div>
+                <t t-call="amgl.customer_position_listing_report_template_body_provident"/>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Withdrawal Report"
+            id="action_report_metal_movement_complete"
+            model="amgl.metal_movement"
+            report_type="qweb-pdf"
+            name="amgl.report_metalmovement_complete"
+            file="amgl.report_metalmovement_complete"
+            groups="amgl.group_amark_admins,amgl.group_amark_vault,amgl.group_amark_sub_admins"
+            attachment_use="True"
+         />
+    </data>
+</odoo>

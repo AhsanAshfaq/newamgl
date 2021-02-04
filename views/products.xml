@@ -1,0 +1,41 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="amgl.products_tree">
+          <field name="name">Products</field>
+          <field name="model">amgl.products</field>
+          <field name="arch" type="xml">
+            <tree duplicate="0">
+                <field name="name" string="Amark Description"/>
+                <field name="goldstar_name" string="GoldStar Description"/>
+                <field name="type"/>
+                <field name="weight_per_piece"  />
+                <field name="weight_unit"/>
+                <field name="product_code"/>
+                <field name="gs_product_code"/>
+            </tree>
+          </field>
+        </record>
+
+
+        <record id="amgl.products_form" model="ir.ui.view">
+            <field name="name">Products</field>
+            <field name="model">amgl.products</field>
+            <field name="arch" type="xml">
+                <form string="" duplicate="0">
+                    <sheet>
+                        <group>
+                            <field name="name" string="Amark Description"/>
+                            <field name="goldstar_name" string="GoldStar Description"/>
+                            <field name="type"/>
+                            <field name="weight_per_piece" widget="regex_mask" data-inputmask-regex="(^[0-9]{1,6}(\.[0-9]{1,2})$)" />
+                            <field name="weight_unit"/>
+                            <field name="product_code"/>
+                            <field name="gs_product_code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

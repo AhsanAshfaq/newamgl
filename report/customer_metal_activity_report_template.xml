@@ -1,0 +1,153 @@
+<odoo>
+    <template id="report_customer_metal_activity">
+        <t t-foreach="docs" t-as="o">
+            <t t-set="order_type" t-if="o.get_sorted_list(o.customer_order_lines)"
+               t-value="o.get_sorted_list(o.customer_order_lines)[0].products.gs_product_code"/>
+            <div class="page" style="font-family:monospace !important;font-size:9px;">
+                <style>
+                    th {
+                    text-align:left;
+                    padding: 3px;
+                    }
+                    td {
+                    color: grey;
+                    padding: 3px;
+                    }
+                </style>
+
+                <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                    <div style="width:20%;float:left;">
+                        <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                             style="color:white !important;height: auto; width: 150px;"/>
+                    </div>
+                    <div style="width:20%;float:right;margin-top:11px;text-align:center !important;">
+                        <div>
+                            <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                  t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="width:65%;float:left;">
+                    <table>
+                        <tr style="color:black !important;">
+                            <td style="color:black !important;font-size:10px; !important;">
+                                First Name:
+                            </td>
+                            <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                                <span t-field="o.first_name"/>
+                            </td>
+                        </tr>
+                        <tr style="color:black !important;font-size:10px; !important;">
+                            <td style="color:black !important;">
+                                Last Name:
+                            </td>
+                            <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                                <span t-field="o.last_name"/>
+                            </td>
+                        </tr>
+                        <tr style="color:black !important;">
+                            <td style="color:black !important;font-size:10px; !important;">
+                                Account Type:
+                            </td>
+                            <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                                <span t-field="o.account_type"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="width:35%;float:right;">
+                    <table>
+                        <tr style="color:black !important;">
+                            <td style="color:black !important;font-size:10px; !important;">
+                                Account Number:
+                            </td>
+                            <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                                <t t-if="'Gold' in o.custodian_id.name">
+                                    <span t-field="o.gst_account_number"/>
+                                </t>
+                                <t t-if="'Gold' not in o.custodian_id.name">
+                                    <span t-field="o.account_number"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr style="color:black !important;font-size:10px; !important;">
+                            <td style="color:black !important;">
+                                Custodian:
+                            </td>
+                            <td style="padding-left:10px;color:black !important;font-size:10px; !important;">
+                                <span t-field="o.custodian_id"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="width:100%;float:right;margin-top:40px;text-align:center !important;">
+                    <div style="font-size:15px !important;font-weight:bold;text-align:center !important;color:black !important;">
+                        <u>CUSTOMER METAL ACTIVITY</u>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="margin-top:50px !important;"></div>
+                <br/>
+                <t t-call="amgl.body_report_customer_metal_activity"/>
+            </div>
+        </t>
+    </template>
+    <template id="body_report_customer_metal_activity">
+        <t t-set="filtered_order_lines" t-value="o.get_filtered_customer_order_lines()"/>
+        <t t-if="len(filtered_order_lines) > 0">
+            <table align="left" style="font-family:monospace !important;font-size:9px;width:100%;padding-top:10px;">
+                    <thead>
+                        <tr>
+                            <th style="border-bottom: 2px solid black !important;color:black !important;">Product</th>
+                            <th style="border-bottom: 2px solid black !important;color:black !important;">Commodity</th>
+                            <th style="border-bottom: 2px solid black !important;text-align:right !important;color:black !important;">Quantity</th>
+                            <th style="border-bottom: 2px solid black !important;text-align:right !important;color:black !important;">Total Weight</th>
+                            <th style="border-bottom: 2px solid black !important;color:black !important;padding-left:10px; !important">Date</th>
+                        </tr>
+                    </thead>
+                    <tfoot >
+                         <tr> <td></td> <td></td>  <td></td>  <td></td>   <td></td> </tr>
+                    </tfoot>
+                    <t t-foreach="filtered_order_lines" t-as="ol">
+                        <tbody>
+                            <tr>
+                                 <td style="color:black;"> <span t-field="ol.products"/> </td>
+                                 <td style="color:black;"> <span t-field="ol.commodity"/> </td>
+                                 <td style="color:black;text-align:right;"> <span t-esc="'{0:,.0f}'.format(ol.total_received_quantity)"/> </td>
+                                 <td style="color:black;text-align:right;"> <span t-esc="'{0:,.2f}'.format(float(ol.temp_received_weight))"/> oz </td>
+                                 <td style="color:black;padding-left:10px; !important"> <span t-field="ol.date_for_customer_metal_activitiy"/> </td>
+                            </tr>
+                        </tbody>
+                    </t>
+            </table>
+        </t>
+
+        <t t-if="not len(o.customer_order_lines) > 0">
+            <table align="left" style="font-family:monospace !important;font-size:9px;width:100%;padding-top:10px;">
+                <thead>
+                    <tr>
+                        <th style="border-bottom: 2px solid black !important;color:black !important;">Product</th>
+                        <th style="border-bottom: 2px solid black !important;color:black !important;">Commodity</th>
+                        <th style="border-bottom: 2px solid black !important;text-align:right !important;color:black !important;">Quantity</th>
+                        <th style="border-bottom: 2px solid black !important;text-align:right !important;color:black !important;">Total Weight</th>
+                        <th style="border-bottom: 2px solid black !important;color:black !important;padding-left:10px; !important">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                             <td style="color:black;"> N/A </td>
+                             <td style="color:black;"> N/A </td>
+                             <td style="color:black;text-align:right;"> 0</td>
+                             <td style="color:black;text-align:right;"> 0.00 oz </td>
+                             <td style="color:black;padding-left:10px; !important"> N/A </td>
+                        </tr>
+                    </tbody>
+            </table>
+        </t>
+
+    </template>
+
+</odoo>

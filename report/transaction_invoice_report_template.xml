@@ -1,0 +1,308 @@
+<odoo>
+    <template id="transaction_invoice_report_template">
+        <t t-call="report.html_container">
+            <t t-as="report.external_layout">
+                <t t-if="len(docs) == 0">
+                    <div class="page">
+                        <h1 style="text-align:center !important;">No Data Found.</h1>
+                    </div>
+                </t>
+                <t t-if="len(docs) > 0">
+                    <div class="page">
+                        <style>
+                            .text-right{
+                            text-align:right !important;
+                            padding-left:5px !important;
+                            }
+                        </style>
+                        <div style="clear:both;"></div>
+                        <div style="width:20%;float:left;">
+                            <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                                 style="color:white !important;height: auto; width: 150px;"/>
+                        </div>
+                        <div style="clear:both;"></div>
+                        <div style="margin-top:30px !important;padding-top:20px !important;font-family:monospace !important;font-size:9px;background-color:  white !important;">
+                            <div style="width:100%;">
+                                <t t-if=" 'Gold' in docs[0].customer_id.custodian_id.name">
+                                    <div style="font-family:monospace !important;font-size:11px !important;width:50%;float:left;text-align:left !important;">
+                                        Bill To :
+                                        <b>GoldStar Trust Company</b>
+                                        <div style="margin-left:40px !important;">
+                                            1401 West 4th Ave.
+                                        </div>
+                                        <div style="margin-left:40px !important;">
+                                            Canyon, TX 79015
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if=" 'New' in docs[0].customer_id.custodian_id.name">
+                                    <div style="font-family:monospace !important;font-size:11px !important;width:50%;float:left;text-align:left !important;">
+                                        Bill To :
+                                        <b>New Direction Trust Company</b>
+                                        <div style="margin-left:40px !important;">
+                                            1070 W. Century Dr., #101
+                                        </div>
+                                        <div style="margin-left:40px !important;">
+                                            Louisville, CO 80027
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if=" 'Provident' in docs[0].customer_id.custodian_id.name">
+                                    <div style="font-family:monospace !important;font-size:11px !important;width:50%;float:left;text-align:left !important;">
+                                        Bill To :
+                                        <b>Provident Trust Group</b>
+                                        <div style="margin-left:40px !important;">
+                                            8880 W. Sunset Rd
+                                        </div>
+                                        <div style="margin-left:40px !important;">
+                                            Suite 250
+                                        </div>
+                                        <div style="margin-left:40px !important;">
+                                            Las Vegas, NV 89148
+                                        </div>
+                                    </div>
+                                </t>
+                                <div style="font-family:monospace !important;font-size:11px !important;width:30%;float:right;text-align:left !important;">
+                                    <span>Invoice:
+                                        <b>Transaction</b>
+                                    </span>
+                                </div>
+                                <br/>
+                                <div style="font-family:monospace !important;font-size:11px !important;width:30%;float:right;text-align:left !important;">
+                                    Billing Month:
+                                    <b>
+                                        <span t-esc="docs.get_billing_month(docs)"/>
+                                    </b>
+                                </div>
+                                <br/>
+                                <div style="font-family:monospace !important;font-size:11px !important;width:30%;float:right;text-align:left !important;">
+                                    Issued Date:
+                                    <b>
+                                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                                    </b>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div style="clear:both;"></div>
+                            <div style="width:100%;text-align:center !important;font-weight:bold !important;font-family:monospace !important;font-size:15px !important;">
+                                <u>
+                                    <span t-esc="docs[0].customer_id.custodian_id.name"/>
+                                </u>
+                            </div>
+                            <div style="clear:both;"></div>
+                            <div style="margin-top:60px;"></div>
+                        </div>
+                        <t t-call="amgl.transaction_invoice_report_template_body"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="transaction_invoice_report_template_body">
+        <t t-set="total_inbound_fees" t-value="0"/>
+        <t t-set="total_outbound_fees" t-value="0"/>
+        <t t-set="total_shipment_fees" t-value="0"/>
+        <t t-set="total_administrative_fees" t-value="0"/>
+        <t t-set="total_other_fees" t-value="0"/>
+        <t t-set="unique_batches" t-value="[]"/>
+        <table
+                style="width:100%;border-collapse: collapse;font-family:monospace !important;font-size:7px !important;">
+            <thead>
+                <tr class="text-left">
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="left">Last
+                        Name
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="left">First
+                        Name
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="left">Account
+                        #
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="left">Ref #
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="left">Trans.
+                        Date
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="right">
+                        Deposit
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="right">
+                        Withdrawal
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="right">
+                        Shipping
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="right">
+                        Administrative
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="right">
+                        Other
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;font-size:9px !important;" align="right">Total
+                        Fees
+                    </th>
+                    <th style="border-bottom: 2px solid black !important;padding-left:10px !important;font-size:9px !important;"
+                        align="left">Notes
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="color:white  !important;border-top:3px solid white !important;">.</td>
+                    <td style="color:white !important;border-top:3px solid white !important;">.</td>
+                    <td style="color:white !important;border-top:3px solid white !important;">.</td>
+                    <td style="color:white !important;border-top:3px solid white !important;">.</td>
+                    <td style="color:white !important;border-top:3px solid white !important;">.</td>
+                    <td style="color:white !important;border-top:3px solid white !important;">.</td>
+                    <td style="color:white !important;border-top:3px solid white !important;">.</td>
+                    <td style="color:white !important;border-top:3px solid white !important;">.</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+            <tbody class="sale_tbody">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <t t-foreach="docs" t-as="o">
+                    <t t-if="(o.order_line_id and o.order_line_id.batch_number not in unique_batches) or (o.metal_movement_id)">
+                        <tr>
+                            <td style="border:1px solid white !important;">
+                                <span t-field="o.customer_id.last_name"/>
+                            </td>
+                            <td style="border:1px solid white !important;">
+                                <span t-field="o.customer_id.first_name"/>
+                            </td>
+                            <td style="border:1px solid white !important;">
+                                <t t-if="'Gold' in o.customer_id.custodian_id.name">
+                                    <span t-field="o.customer_id.gst_account_number"/>
+                                </t>
+                                <t t-if="'Gold' not in o.customer_id.custodian_id.name">
+                                    <span t-field="o.customer_id.account_number"/>
+                                </t>
+                            </td>
+                            <td style="border:1px solid white !important;">
+                                <t t-if="o.order_line_id">
+                                    <span t-field="o.order_line_id.batch_number"/>
+                                    <t t-set="unique_batches"
+                                       t-value="unique_batches+[o.order_line_id.batch_number]"/>
+                                </t>
+                                <t t-if="o.metal_movement_id">
+                                    <span t-field="o.metal_movement_id.mmr_number"/>
+                                </t>
+                            </td>
+                            <td style="border:1px solid white !important;">
+                                <t t-if="o.order_line_id">
+                                    <span t-field="o.order_line_id.date_received"/>
+                                </t>
+                                <t t-if="o.metal_movement_id">
+                                    <span t-field="o.metal_movement_id.date_create"/>
+                                </t>
+                            </td>
+                            <td class="text-right" style="border:1px solid white !important;">
+                                <t t-set="total_inbound_fees" t-value="total_inbound_fees + o.inbound_fees"/>
+                                <span t-esc="'{0:,.2f}'.format(float(o.inbound_fees))"/>
+                            </td>
+                            <td class="text-right" style="border:1px solid white !important;">
+                                <t t-set="total_outbound_fees" t-value="total_outbound_fees + o.outbound_fees"/>
+                                <span t-esc="'{0:,.2f}'.format(float(o.outbound_fees))"/>
+                            </td>
+                            <td class="text-right" style="border:1px solid white !important;">
+                                <t t-set="total_shipment_fees" t-value="total_shipment_fees + o.shipment_fees"/>
+                                <span t-esc="'{0:,.2f}'.format(float(o.shipment_fees))"/>
+                            </td>
+                            <td class="text-right" style="border:1px solid white !important;">
+                                <t t-set="total_administrative_fees"
+                                   t-value="total_administrative_fees + o.administrative_fees"/>
+                                <span t-esc="'{0:,.2f}'.format(float(o.administrative_fees))"/>
+                            </td>
+                            <td class="text-right" style="border:1px solid white !important;">
+                                <t t-set="total_other_fees" t-value="total_other_fees + o.other_fees"/>
+                                <span t-esc="'{0:,.2f}'.format(float(o.other_fees))"/>
+                            </td>
+                            <td class="text-right" style="border:1px solid white !important;">
+                                <span t-esc="'{0:,.2f}'.format(float((o.other_fees + o.inbound_fees + o.outbound_fees + o.shipment_fees + o.administrative_fees)))"/>
+                            </td>
+                            <td class="text-left"
+                                style="padding-left:10px !important;border:1px solid white !important;">
+                                <span t-esc="o.fee_note"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                    <tr>
+                        <td colspan="5" style="border:1px solid white !important;"></td>
+                        <td class="text-right"
+                            style="width:50px;border-top:2px solid;border-bottom:2px solid;">
+                            <strong>
+                                $
+                                <span t-esc="'{0:,.2f}'.format(float(total_inbound_fees))"/>
+                            </strong>
+                        </td>
+                        <td class="text-right" align="right"
+                            style="width:50px;border-top:2px solid;border-bottom:2px solid;">
+                            <strong>
+                                $
+                                <span t-esc="'{0:,.2f}'.format(float(total_outbound_fees))"/>
+                            </strong>
+                        </td>
+                        <td class="text-right" colspan="1"
+                            style="width:50px;border-top:2px solid;border-bottom:2px solid;">
+                            <strong>
+                                $
+                                <span t-esc="'{0:,.2f}'.format(float(total_shipment_fees))"/>
+                            </strong>
+                        </td>
+                        <td class="text-right" colspan="1"
+                            style="width:50px;border-top:2px solid;border-bottom:2px solid;">
+                            <strong>
+                                $
+                                <span t-esc="'{0:,.2f}'.format(float(total_administrative_fees))"/>
+                            </strong>
+                        </td>
+                        <td class="text-right" colspan="1"
+                            style="width:50px;border-top:2px solid;border-bottom:2px solid;">
+                            <strong>
+                                $
+                                <span t-esc="'{0:,.2f}'.format(float(total_other_fees))"/>
+                            </strong>
+                        </td>
+                        <td class="text-right" colspan="1"
+                            style="width:50px;border-top:2px solid;border-bottom:2px solid;">
+                            <strong>
+                                $
+                                <span t-esc="'{0:,.2f}'.format(float((total_other_fees + total_inbound_fees + total_outbound_fees + total_shipment_fees + total_administrative_fees)))"/>
+                            </strong>
+                        </td>
+                        <td style="border:1px solid white !important;">
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <div style="clear:both;"></div>
+        <div style="float:right;color:black !important;font-family:monospace !important;font-size:9px;">
+            <span style="text-align:left;text-decoration:underline !important;">
+                <b style="text-align:left;">Grand Total</b>
+            </span>
+            <span style="margin-left: 30px;">
+                <b>$
+                    <span t-esc="'{0:,.2f}'.format(float((total_other_fees + total_inbound_fees + total_outbound_fees + total_shipment_fees + total_administrative_fees)))"/>
+                </b>
+            </span>
+        </div>
+    </template>
+</odoo>

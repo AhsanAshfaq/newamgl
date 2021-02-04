@@ -1,0 +1,313 @@
+<odoo>
+    <template id="custodian_inventory_by_customer_report_template_body">
+        <t t-set="all_customers_total_gold" t-value="0.00"/>
+        <t t-set="all_customers_total_silver" t-value="0.00"/>
+        <t t-set="all_customers_total_platinum" t-value="0.00"/>
+        <t t-set="all_customers_total_palladium" t-value="0.00"/>
+        <t t-set="custodians" t-value="docs.get_custodians(docs)"/>
+        <t t-foreach="custodians" t-as="custodian">
+            <div style="clear:both;"></div>
+            <h2 style="margin-bottom: 40px !important;font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                <span t-esc="custodian"/>
+            </h2>
+            <div style="margin-top: 100px !important;"></div>
+            <t t-foreach="docs" t-as="o">
+                <t t-set="orders" t-value="docs.get_customer_master_order_lines(o)"/>
+                <t t-if="orders">
+                    <t t-if="o.custodian_id.name == custodian">
+                        <h2 style="margin-top: 30px !important;margin-bottom: 30px !important;font-size:15px !important;text-align:left;font-weight: bold;">
+                            <span t-esc="o.full_name"/>,
+                            <t t-if="custodian == 'GoldStar Trust Company'">
+                                <span t-esc="o.gst_account_number"/>,
+                            </t>
+                            <t t-if="custodian != 'GoldStar Trust Company'">
+                                <span t-esc="o.account_number"/>,
+                            </t>
+                            <span t-esc="o.account_type"/>
+                        </h2>
+                        <table class="table table-condensed"
+                               style="page-break-inside: always;margin-top:30px;width:100%;
+                       border-collapse: collapse;font-family:monospace !important;font-size:9px !important;">
+                            <thead>
+                                <tr style="border-bottom:1px solid black !important;">
+                                    <th style="width:20% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                        Products
+                                    </th>
+                                    <th style="width:20% !important;border-bottom:1px solid black !important;text-align:left !important;">
+                                        Product Code
+                                    </th>
+                                    <th style="width:15% !important;border-bottom:1px solid black !important;text-align:right !important;">
+                                        Gold
+                                        Oz
+                                    </th>
+                                    <th style="width:15% !important;border-bottom:1px solid black !important;text-align:right !important;">
+                                        Silver
+                                        Oz
+                                    </th>
+                                    <th style="width:15% !important;border-bottom:1px solid black !important;text-align:right !important;">
+                                        Platinum Oz
+                                    </th>
+                                    <th style="width:15% !important;border-bottom:1px solid black !important;text-align:right !important;">
+                                        Palladium Oz
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total_gold" t-value="0"/>
+                                <t t-set="total_silver" t-value="0"/>
+                                <t t-set="total_platinum" t-value="0"/>
+                                <t t-set="total_palladium" t-value="0"/>
+                                <t t-foreach="orders" t-as="ol">
+                                    <t t-set="render" t-value="False"/>
+                                    <t t-if="ol.metal_movement_id">
+                                        <t t-if="ol.metal_movement_id.state == 'completed'">
+                                            <t t-set="render" t-value="True"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="not ol.metal_movement_id">
+                                        <t t-set="render" t-value="True"/>
+                                    </t>
+                                    <t t-if="render">
+                                        <tr>
+                                            <td align="left">
+                                                <span t-esc="ol.products.goldstar_name"/>
+                                            </td>
+                                            <td align="left">
+                                                <span t-esc="ol.products.product_code"/>
+                                            </td>
+                                            <td align="right">
+                                                <t t-if="ol.products.type == 'Gold'">
+                                                    <span t-esc="'{0:,.2f}'.format(docs.get_total_weight_after_including_completed_withdrawal(ol))"/>
+                                                    <t t-set="total_gold"
+                                                       t-value="total_gold + docs.get_total_weight_after_including_completed_withdrawal(ol)"/>
+                                                </t>
+                                                <t t-if="ol.products.type != 'Gold'">
+                                                    <span t-esc="'{0:,.2f}'.format(0)"/>
+                                                </t>
+                                            </td>
+                                            <td align="right">
+                                                <t t-if="ol.products.type == 'Silver'">
+                                                    <span t-esc="'{0:,.2f}'.format(docs.get_total_weight_after_including_completed_withdrawal(ol))"/>
+                                                    <t t-set="total_silver"
+                                                       t-value="total_silver + docs.get_total_weight_after_including_completed_withdrawal(ol)"/>
+                                                </t>
+                                                <t t-if="ol.products.type != 'Silver'">
+                                                    <span t-esc="'{0:,.2f}'.format(0)"/>
+                                                </t>
+                                            </td>
+                                            <td align="right">
+                                                <t t-if="ol.products.type == 'Platinum'">
+                                                    <span t-esc="'{0:,.2f}'.format(docs.get_total_weight_after_including_completed_withdrawal(ol))"/>
+                                                    <t t-set="total_platinum"
+                                                       t-value="total_platinum + docs.get_total_weight_after_including_completed_withdrawal(ol)"/>
+                                                </t>
+                                                <t t-if="ol.products.type != 'Platinum'">
+                                                    <span t-esc="'{0:,.2f}'.format(0)"/>
+                                                </t>
+                                            </td>
+                                            <td align="right">
+                                                <t t-if="ol.products.type == 'Palladium'">
+                                                    <span t-esc="'{0:,.2f}'.format(docs.get_total_weight_after_including_completed_withdrawal(ol))"/>
+                                                    <t t-set="total_palladium"
+                                                       t-value="total_palladium + docs.get_total_weight_after_including_completed_withdrawal(ol)"/>
+                                                </t>
+                                                <t t-if="ol.products.type != 'Palladium'">
+                                                    <span t-esc="'{0:,.2f}'.format(0)"/>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-set="all_customers_total_gold" t-value="all_customers_total_gold + total_gold"/>
+                                <t t-set="all_customers_total_silver"
+                                   t-value="all_customers_total_silver + total_silver"/>
+                                <t t-set="all_customers_total_platinum"
+                                   t-value="all_customers_total_platinum + total_platinum"/>
+                                <t t-set="all_customers_total_palladium"
+                                   t-value="all_customers_total_palladium + total_palladium"/>
+                                <tr>
+                                    <td>
+                                        <b>Grand Total</b>
+                                    </td>
+                                    <td></td>
+                                    <td align="right">
+                                        <b>
+                                            <span t-esc="'{0:,.2f}'.format(total_gold)"/>
+                                        </b>
+                                    </td>
+                                    <td align="right">
+                                        <b>
+                                            <span t-esc="'{0:,.2f}'.format(total_silver)"/>
+                                        </b>
+                                    </td>
+                                    <td align="right">
+                                        <b>
+                                            <span t-esc="'{0:,.2f}'.format(total_platinum)"/>
+                                        </b>
+                                    </td>
+                                    <td align="right">
+                                        <b>
+                                            <span t-esc="'{0:,.2f}'.format(total_palladium)"/>
+                                        </b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </t>
+        <table style="margin-top:20px !important;float:right;width:35%;border:2px  solid black !important; border-collapse: collapse;">
+            <thead>
+
+                <tr>
+                    <td colspan="4" style="align:left !important;font-size:12px !important;font-weight: bold;">
+                        SUMMARY
+                    </td>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td style="font-size:12px !important;">Gold</td>
+                    <td></td>
+                    <td></td>
+                    <td style="font-size:12px !important;text-align:right !important;">
+                        <span t-esc="'{0:,.2f}'.format(all_customers_total_gold)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:12px !important;">Silver</td>
+                    <td></td>
+                    <td></td>
+                    <td style="font-size:12px !important;text-align:right !important;">
+                        <span t-esc="'{0:,.2f}'.format(all_customers_total_silver)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:12px !important;">Platinum</td>
+                    <td></td>
+                    <td></td>
+                    <td style="font-size:12px !important;text-align:right !important;">
+                        <span t-esc="'{0:,.2f}'.format(all_customers_total_platinum)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:12px !important;">Palladium</td>
+                    <td></td>
+                    <td></td>
+                    <td style="font-size:12px !important;text-align:right !important;">
+                        <span t-esc="'{0:,.2f}'.format(all_customers_total_palladium)"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="oe_structure"/>
+    </template>
+    <template id="custodian_inventory_by_customer_report_template">
+        <t t-set="filtered_customers" t-value="docs.filter_customers(docs)"/>
+        <t t-if="len(filtered_customers) == 0">
+            <div class="page">
+                <h1 style="text-align:center !important;">No data found...</h1>
+            </div>
+        </t>
+
+        <t t-if="len(filtered_customers) > 0">
+            <t t-if="len(filtered_customers) == 1">
+                <t t-if="filtered_customers[0].is_account_closed == True">
+                    <div class="page">
+                        <h1 style="text-align:center !important;">This account is closed ....</h1>
+                    </div>
+                </t>
+            </t>
+            <t t-if="len(filtered_customers) == 1">
+                <t t-if="filtered_customers[0].is_account_closed != True">
+                    <div class="page">
+                        <div class="page" style="height:100%;page-break-inside: always;background-color: white !important;">
+                    <style>
+                        .text-right{
+                        text-align:right !important;
+                        padding-left:5px !important;
+                        }
+                        .page{
+                        background-color: white !important;
+                        }
+                    </style>
+                    <div class="oe_structure"/>
+                    <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                        <div style="width:20%;float:left;">
+                            <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                                 style="color:white !important;height: auto; width: 150px;"/>
+                        </div>
+                        <div style="width:20%;float:right;margin-top:11px;">
+                            <div>
+                                <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                      t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                        <div style="clear:both;"></div>
+                        <div style="width:100%;">
+                            <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                                Custodian Inventory By Customer
+                            </h2>
+                        </div>
+
+                    </div>
+                    <t t-call="amgl.custodian_inventory_by_customer_report_template_body"/>
+                </div>
+                    </div>
+                </t>
+            </t>
+            <t t-if="len(filtered_customers) > 1">
+                <div class="page" style="height:100%;page-break-inside: always;background-color: white !important;">
+                    <style>
+                        .text-right{
+                        text-align:right !important;
+                        padding-left:5px !important;
+                        }
+                        .page{
+                        background-color: white !important;
+                        }
+                    </style>
+                    <div class="oe_structure"/>
+                    <div style="width:100%;height: 100px !important;
+                        text-align:center !important;margin:auto;">
+                        <div style="width:20%;float:left;">
+                            <img align="left" src="/amgl/static/src/img/amark_logo.png"
+                                 style="color:white !important;height: auto; width: 150px;"/>
+                        </div>
+                        <div style="width:20%;float:right;margin-top:11px;">
+                            <div>
+                                <span style="font-size:15px !important;font-weight:bold;float:right;color:black !important;"
+                                      t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div style="font-family:monospace !important;font-size:9px;text-align:center !important;">
+                        <div style="clear:both;"></div>
+                        <div style="width:100%;">
+                            <h2 style="font-size:15px !important;text-align:center;text-decoration:underline;font-weight: bold;">
+                                Custodian Inventory By Customer
+                            </h2>
+                        </div>
+
+                    </div>
+                    <t t-call="amgl.custodian_inventory_by_customer_report_template_body"/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

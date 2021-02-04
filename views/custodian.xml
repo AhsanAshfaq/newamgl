@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="amgl.custodian_form" model="ir.ui.view">
+            <field name="name">Custodians</field>
+            <field name="model">amgl.custodian</field>
+            <field name="arch" type="xml">
+                <form string="Custodians">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="custodian_code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="amgl.custodian_tree" model="ir.ui.view">
+            <field name="name">Custodians</field>
+            <field name="model">amgl.custodian</field>
+            <field name="arch" type="xml">
+                <tree string="Custodians">
+                    <field name="name"/>
+                    <field name="custodian_code"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,525 @@
+<odoo>
+    <template id="report_metalmovement">
+        <div class="page" style="font-family:monospace !important;font-size:9px;">
+            <div style="width:100%;height: 100px !important;padding-top:30px !important;
+                        text-align:center !important;padding:0px;margin:auto;">
+                <img src="/amgl/static/src/img/amark_logo.png"
+                     style="color:white !important;float:left !important;padding: 0px; margin-top:-15px; height: auto; width: 150px;"/>
+                <div style="font-size:23px;font-weight:bold;text-align:center; margin-top:-5px !important;color:black !important;">
+                    Withdrawal
+                    Request
+                </div>
+            </div>
+            <t t-foreach="docs" t-as="o">
+                <div style="margin-top:15px; width:100%;">
+                    <div style="font-size:10px !important;font-weight: bold;text-align:left !important;float:left;width:33.33%">
+                        Date:
+                        <span t-field="o.date_create" t-field-options='{"format": "MMMM d y"}'/>
+                    </div>
+                    <div style="font-size:10px !important;font-weight: bold;text-align:center !important;float:left; width:33.33%;">
+                        Reference:
+                        <span t-field="o.reference"/>
+                    </div>
+                    <div style="font-size:10px !important;font-weight: bold;text-align:right !important;float:left;width:33.33%;">
+                        Withdrawal #:
+                        <span t-field="o.mmr_number"/>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div style="margin-top:15px;">
+
+                    <div style="float:left;border:1px solid black;width:49.7%;">
+                        <div style="width:100% !important;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px !important;">
+                            <span style="color:white !important;">Move Metal From</span>
+                        </div>
+                        <div style="margin-top:8px;margin-bottom:8px; margin-left:7px;">
+                            <table>
+                                <tr>
+                                    <td style="font-size:10px !important;text-align:left !important;">Custodian:</td>
+                                    <td style="border-left: 15px solid transparent;">
+                                        <span t-field="o.custodian.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px !important;text-align:left !important;">Name:</td>
+                                    <td style="border-left: 15px solid transparent;">
+                                        <span t-field="o.customer"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px !important;text-align:left !important;">Account #:</td>
+                                    <td style="border-left: 15px solid transparent;">
+                                        <span t-field="o.mmf_account_number"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px !important;text-align:left !important;">Account Type:</td>
+                                    <td style="border-left: 15px solid transparent;">
+                                        <span t-field="o.mmf_account_type"/>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div style="float:left;border:1px solid white;width:0.6%;">
+                    </div>
+                    <div style="float:left;border:1px solid black;width:49.7%;">
+                        <div style="width:100% !important;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px !important;">
+                            <span style="color:white !important;">Move Metal To</span>
+                        </div>
+                        <div style="width:100% !important;margin-top:8px;margin-bottom:8px;margin-left:7px;">
+                            <table>
+                                <tr>
+                                    <td style="font-size:10px !important;text-align:left !important;">Name:</td>
+                                    <td style="border-left: 15px solid transparent;">
+                                        <span t-field="o.mmt_name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <t t-if="(not o.metal_movement_type in ('IT','PICKUP','TRANSAC'))">
+                                        <td style="font-size:10px !important;text-align:left !important;">Address:</td>
+                                        <td style="border-left: 15px solid transparent;">
+                                            <span t-field="o.mmt_address"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px !important;text-align:left !important;">Account:</td>
+                                    <td style="border-left: 15px solid transparent;">
+                                        <span t-field="o.mmt_account_number"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <t t-if="(o.metal_movement_type in ('TRANSAC','PICKUP','IT'))">
+                                        <td style="font-size:10px !important;text-align:left !important;">Company:</td>
+                                        <td style="border-left: 15px solid transparent;">
+                                            <span t-field="o.mmt_company"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="( not o.metal_movement_type in ('TRANSAC','PICKUP','IT'))">
+                                        <td style="font-size:9px !important;padding-top: 13;">
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <t t-if="(o.metal_movement_type in ('IT'))">
+                                        <td style="font-size:9px !important;padding-top: 13;">
+                                        </td>
+                                    </t>
+                                    <t t-if="(o.metal_movement_type in ('PICKUP','TRANSAC'))">
+                                        <td style="font-size:10px !important;text-align:left !important;">Pickup Date/Time:</td>
+                                        <td style="border-left: 15px solid transparent;">
+                                            <span style="font-size:9px !important;" t-field="o.pickup_date"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="clear:both;"/>
+                    <br/>
+                    <div style="margin-top:15px;">
+                        <div style="height:79px;float:left;border:1px solid black;width:49.7%;">
+                            <div style="width:100% !important;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px  !important;;">
+                                <span style="color:white !important;margin-left:3px;margin-right:3px;">Withdrawal Type
+                                </span>
+                            </div>
+                            <div style="text-align:center;padding-top:20px;">
+                                <p t-field="o.metal_movement_type"/>
+                            </div>
+                        </div>
+                        <div style="float:left;border:1px solid white;width:0.6%;">
+                        </div>
+                        <div style="height:79px;float:left;border:1px solid black;width:49.7%;">
+                            <div style="width:100% !important;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px  !important;;">
+                                <span style="color:white !important;margin-left:3px;margin-right:3px;">HQ
+                                    Authorization
+                                </span>
+                            </div>
+                            <div style="height:57px;float:left;border-right:1px solid black;width:50%;text-align:center;">
+                                <p style="font-size:10px !important;font-weight:bold;text-align:center;">#1</p>
+                                <p t-field="o.first_letter_from_name"/>
+                            </div>
+                            <div style="font-size:10px !important;float:left;width:50%;text-align:center;">
+                                <p style="font-size:10px !important;font-weight:bold;text-align:center;">#2</p>
+                                <p t-field="o.second_letter_from_name"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both;"/>
+                    <br/>
+                    <t t-if="o.is_special_instruction_available == True">
+                        <div style="margin-top:15px;">
+                            <div style="float:left;width:100%;border:1px solid black;">
+                                <div style="width:100% !important;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px  !important;;">
+                                    <span style="color:white !important;margin-left:3px;margin-right:3px;">Special
+                                        Instruction
+                                    </span>
+                                </div>
+                                <div style="padding-left:5px;">
+                                    <p style="font-size:10px !important;" t-field="o.special_instruction"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div style="clear:both;"/>
+                    <br/>
+                    <hr style="border-top: dotted 1px;"/>
+                    <t t-if="len(o.order_lines) > 0">
+                        <h3 style="text-align: center;margin-bottom:10px;">Metals To Be Moved</h3>
+                        <table class="table-condensed" style="width:100%;padding:5px;color:white !important;">
+                            <thead>
+                                <tr style="background-color:#3590B8 !important;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;">
+                                    <th class="text-left" style="color:white !important;">
+                                        <strong style="color:white !important;">Product Details</strong>
+                                    </th>
+                                    <th style="text-align:left !important;color:white !important;">
+                                        <strong style="text-align:left !important;color:white !important;">Commodity
+                                        </strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong style="color:white !important;">Quantity</strong>
+                                    </th>
+                                    <th class="text-right" style="color:white !important;">
+                                        <strong style="color:white !important;">Weight</strong>
+                                    </th>
+                                    <th class="text-right" style="white-space: nowrap;color:white !important;">
+                                        <strong style="color:white !important;">Total Weight</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total_gold" t-value="0"/>
+                                <t t-set="total_silver" t-value="0"/>
+                                <t t-set="total_platinum" t-value="0"/>
+                                <t t-set="total_palladium" t-value="0"/>
+                                <t t-set="total" t-value="0"/>
+                                <tr t-foreach="o.order_lines.sorted(key=lambda b: b.commodity)" t-as="line_ids"
+                                    style="color:black !important;">
+                                    <t t-foreach="line_ids.products" t-as="product">
+                                        <t t-if="(product.type == 'Gold')">
+                                            <t t-set="total_gold" t-value="total_gold+float(line_ids.quantity)"/>
+                                        </t>
+                                        <t t-if="(product.type == 'Silver')">
+                                            <t t-set="total_silver" t-value="total_silver+float(line_ids.quantity)"/>
+                                        </t>
+                                        <t t-if="(product.type == 'Platinum')">
+                                            <t t-set="total_platinum"
+                                               t-value="total_platinum+float(line_ids.quantity)"/>
+                                        </t>
+                                        <t t-if="(product.type == 'Palladium')">
+                                            <t t-set="total_palladium"
+                                               t-value="total_palladium+float(line_ids.quantity)"/>
+                                        </t>
+                                    </t>
+                                    <td class="text-left" style="white-space: nowrap;">
+                                        <span t-field="line_ids.products"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-field="line_ids.commodity"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-field="line_ids.quantity"/>
+                                    </td>
+                                    <t>
+                                        <td align="right" style="white-space: nowrap;">
+                                            <span t-esc="'{0:,.2f}'.format(float(line_ids.weight))"/>
+                                            oz
+                                        </td>
+                                    </t>
+                                    <td style="text-align:right !important;">
+                                        <span t-esc="'{0:,.2f}'.format(float(line_ids.total_weight))"/>
+                                        oz
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div style="margin-top:15px;">
+                            <t t-if="o.is_complete == False">
+                                <div style="float:left;border:1px solid black;width:100%;margin-bottom:20px;height:auto;">
+                                    <div style="width:100% !important;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px  !important;;">
+                                        <span style="color:white !important;margin-left:3px;margin-right:3px;">Vault
+                                            Confirmation
+                                        </span>
+                                    </div>
+                                    <div style="float:left;border-right:1px solid black;width:50%;text-align:center;height:130px;">
+                                        <p style="font-size:10px !important;font-weight:bold;text-align:center;">
+                                            Completed:
+                                        </p>
+                                        <p t-field="o.two_letters_for_completed"/>
+                                    </div>
+                                    <div style="float:left;width:50%;text-align:center;height:130px;">
+                                        <p style="font-size:10px !important;font-weight:bold;text-align:center;">
+                                            Reviewed:
+                                        </p>
+                                        <p t-field="o.two_letters_for_reviewed"/>
+                                    </div>
+                                </div>
+                            </t>
+                            <t t-if="o.is_complete == True">
+                                <div style="float:left;border:1px solid black;width:30.4%;margin-bottom:20px;">
+                                    <div style="!important;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px  !important;;padding:5px;">
+                                        <span style="color:white !important;margin-left:3px;margin-right:3px;">Vault
+                                            Confirmation
+                                        </span>
+                                    </div>
+                                    <div style="float:left;border-right:1px solid black;width:50%;text-align:center;height:90px;">
+                                        <p style="font-size:10px !important;font-weight:bold;text-align:center;padding-top:10px;">
+                                            Completed:
+                                        </p>
+                                        <p t-field="o.two_letters_for_completed"/>
+                                    </div>
+                                    <div style="width:50%;float:left;width:50%;text-align:center;height:90px;">
+                                        <p style="font-size:10px !important;font-weight:bold;text-align:center;padding-top:10px;">
+                                            Reviewed:
+                                        </p>
+                                        <p t-field="o.two_letters_for_reviewed"/>
+                                    </div>
+                                </div>
+                            </t>
+                            <div style="float:left;border:1px solid white;width:0.6%;">
+                            </div>
+                            <t t-if="o.is_complete == True">
+                                <div style="width:69%;float:left;border:1px solid black;">
+                                    <div style="float:center;text-align:center ;background-color:#3590B8 !important;font-weight:bold;font-size:15px  !important;;padding:5px;margin-bottom:10px;">
+                                        <span style="color:white !important;">Package Tracking</span>
+                                    </div>
+                                    <div style="float:left;margin-bottom:10px;margin-left:4px;width:200px;height:auto;">
+                                        <t t-if="o.p1_boolean">
+                                            <span style="text-align:left;float:left;">Package 01 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package1"/>
+                                            <t t-if="o.package1 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package1 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p3_boolean">
+                                            <span style="text-align:left;float:left;">Package 03 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package3"/>
+                                            <t t-if="o.package3 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package3 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p5_boolean">
+                                            <span style="text-align:left;float:left;">Package 05 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package5"/>
+                                            <t t-if="o.package5 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package5 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p7_boolean">
+                                            <span style="text-align:left;float:left;">Package 07 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package7"/>
+                                            <t t-if="o.package7 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package7 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p9_boolean">
+                                            <span style="text-align:left;float:left;">Package 09 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package9"/>
+                                            <t t-if="o.package9 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package9 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p11_boolean">
+                                            <span style="text-align:left;float:left;">Package 11 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package11"/>
+                                            <t t-if="o.package11 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package11 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p13_boolean">
+                                            <span style="text-align:left;float:left;">Package 13 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package13"/>
+                                            <t t-if="o.package13 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package13 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p15_boolean">
+                                            <span style="text-align:left;float:left;">Package 15 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package15"/>
+                                            <t t-if="o.package15 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package15 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p17_boolean">
+                                            <span style="text-align:left;float:left;">Package 17 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package17"/>
+                                            <t t-if="o.package17 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package17 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p19_boolean">
+                                            <span style="text-align:left;float:left;">Package 19 :</span>
+                                            <span style="text-align:left;margin-left:15px;" t-field="o.package19"/>
+                                            <t t-if="o.package19 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package19 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                    </div>
+                                    <div style="margin-left:30px;margin-bottom:10px;float:left;height:auto;">
+                                        <t t-if="o.p2_boolean">
+                                            <span style="text-align:right;float:left;">Package 02 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package2"/>
+                                            <t t-if="o.package2 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package2 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p4_boolean">
+                                            <span style="text-align:right;float:left;">Package 04 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package4"/>
+                                            <t t-if="o.package4 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package4 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p6_boolean">
+                                            <span style="text-align:right;float:left;">Package 06 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package6"/>
+                                            <t t-if="o.package6 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package6 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p8_boolean">
+                                            <span style="text-align:right;float:left;">Package 08 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package8"/>
+                                            <t t-if="o.package8 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package8 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p10_boolean">
+                                            <span style="text-align:right;float:left;">Package 10 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package10"/>
+                                            <t t-if="o.package10 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package10 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p12_boolean">
+                                            <span style="text-align:right;float:left;">Package 12 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package12"/>
+                                            <t t-if="o.package12 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package12 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p14_boolean">
+                                            <span style="text-align:right;float:left;">Package 14 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package14"/>
+                                            <t t-if="o.package14 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package14 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p16_boolean">
+                                            <span style="text-align:right;float:left;">Package 16 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package16"/>
+                                            <t t-if="o.package16 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package16 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p18_boolean">
+                                            <span style="text-align:right;float:left;">Package 18 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package18"/>
+                                            <t t-if="o.package18 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package18 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                        <t t-if="o.p20_boolean">
+                                            <span style="text-align:right;float:left;">Package 20 :</span>
+                                            <span style="text-align:right;margin-left:15px;" t-field="o.package20"/>
+                                            <t t-if="o.package20 == False">
+                                                <br/>
+                                                <br/>
+                                            </t>
+                                            <t t-else="o.package20 == True">
+                                                <br/>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </div>
+
+    </template>
+</odoo>
